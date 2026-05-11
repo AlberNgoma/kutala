@@ -51,7 +51,16 @@ function Mapa() {
             try {
                 const resposta = await bairroService();
 
-                setBairros(resposta.data);
+                const bairrosFormatados = resposta.data.map((bairro) => ({
+                    ...bairro,
+                    coordenadasFormatadas: bairro.poligono[0].map(coord => [
+                        coord[1],
+                        coord[0]
+                    ])
+                }));
+
+                setBairros(bairrosFormatados);
+
             } catch (error) {
                 console.log("Erro ao buscar bairros ", error);
             }
@@ -171,16 +180,13 @@ function Mapa() {
                     <FocusBairro bounds={selectedBounds} />
 
                     {bairros.map((bairro) => {
-                        const coordenadasFormatadas = bairro.poligono[0].map(coord => [
-                            coord[1],
-                            coord[0]
-                        ]);
+                        
 
 
                         return (
                             <Polygon
                                 key={bairro.id}
-                                positions={coordenadasFormatadas}
+                                positions={bairro.coordenadasFormatadas}
                                 pathOptions={{
                                     color: "white",
                                     fillColor: getCorRisco(bairro.riscos?.[0]?.nivel),
