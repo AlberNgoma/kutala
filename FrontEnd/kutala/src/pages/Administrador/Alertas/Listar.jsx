@@ -10,6 +10,8 @@ import getAlerts from "../../../services/Alerta/TodosAlertasService"
 import deleteAlert from "../../../services/Alerta/ApagarAlerta"
 import emitirRisco from "../../../services/Alerta/EmitirRiscoService"
 import { LuTriangleAlert } from "react-icons/lu";
+import alert from "../../../Alerts";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -36,6 +38,7 @@ function Listar() {
     const [pesquisar, setPesquisar] = useState("");
     const [risco, setRisco] = useState("");
     const [sideBar, setSideBar] = useState(false);
+    const [loading, setLoading] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -89,16 +92,21 @@ function Listar() {
         if (!confirmacao) return;
 
         try {
+            setLoading(id);
             await emitirRisco(id, nivelActual);
             setAlertas(alertaActual =>
                 alertaActual.map(a =>
                     a.id === id ? { ...a, status: 'RESOLVIDO' } : a
                 )
             );
-            alert("Risco de inundação emitido com sucesso!");
+
+            alert.success("Risco de inundação emitido com sucesso!");
+
         } catch (error) {
             console.log("Erro ao emitir risco", error);
-            alert("Erro ao emitir risco!");
+            alert.error("Erro ao emitir risco!");
+        } finally {
+            setLoading(null)
         }
     };
 
@@ -110,7 +118,7 @@ function Listar() {
     return (
         <>
             <div className="flex">
-                <SideBarAdmin isOpen={sideBar} />
+                <SideBarAdmin isOpen={sideBar}/>
                 <div className="w-full h-screen bg-gray-50">
                     <div className="px-4 pt-4 flex justify-center flex-col space-y-10">
 
@@ -153,7 +161,7 @@ function Listar() {
                         </div>
 
 
-                        <div className="w-full h-80 rounded-xl overflow-y-auto">
+                        <div className="w-full h-80 rounded-xl overflow-y-auto relative">
                             <table className="w-full text-center p-0">
                                 <thead className="bg-gray-900 h-10 sticky top-0 text-gray-200">
                                     <tr>
@@ -193,16 +201,18 @@ function Listar() {
 
                                                     <TbEdit
                                                         className="bg-green-500 rounded text-white hover:bg-green-700 text-3xl px-2 py-1"
-                                                        onClick={() => navigate(`/admin/editar-alerta/${alerta.id}`)}
+                                                        onClick={() => !loading && navigate(`/admin/editar-alerta/${alerta.id}`)}
                                                     />
                                                     <BsTrash3
                                                         className="bg-red-600 rounded text-white hover:bg-red-700 text-3xl px-2 py-1"
-                                                        onClick={() => apagarAlerta(alerta.id)}
+                                                        onClick={() => !loading && apagarAlerta(alerta.id)}
 
                                                     />
+
                                                     <LuTriangleAlert className="bg-blue-600 rounded text-white hover:bg-blue-700 text-3xl px-2 py-1"
                                                         onClick={() => actualizarAlert(alerta.id, alerta.nivel_alerta)}
                                                     />
+
 
                                                 </td>
                                             </tr>
@@ -217,6 +227,16 @@ function Listar() {
 
                     </div>
                 </div>
+                {loading && (
+                    <div className="bg-black/30 backdrop-blur-sm z-50 fixed inset-0 flex items-center justify-center">
+
+                        <div className="relative w-full flex items-center justify-center flex-col md:left-34">
+                            <ClipLoader size={43} color="#1c0063" />
+                        </div>
+
+
+                    </div>
+                )}
             </div>
         </>
     );
