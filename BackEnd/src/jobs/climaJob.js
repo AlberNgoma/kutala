@@ -4,9 +4,9 @@ const climaService = require("../services/climaService");
 
 
 const LIMITES = {
-    ALTO: { chuva: 0, humidade: 10 },
+    ALTO: { chuva: 0, humidade: 30 },
     MEDIO: { chuva: 0, humidade: 20 },
-    BAIXO: { chuva: 0, humidade: 30 }
+    BAIXO: { chuva: 0, humidade: 10 }
 }
 
 function classificarNivel(chuva, humidade) {

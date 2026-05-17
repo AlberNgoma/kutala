@@ -44,7 +44,8 @@ module.exports = {
         allowNull: false,
         references: { model: 'bairro', key: 'id' },
         onUpdade: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        unique : true
       },
 
       municipio_id: {
