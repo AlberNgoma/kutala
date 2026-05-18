@@ -16,6 +16,7 @@ function gerarEmail({ bairroNome, nivel }) {
 
             <p style="color:#FF0000;">
                 Por favor, tome cuidado!
+                
             </p>
 
         </div>

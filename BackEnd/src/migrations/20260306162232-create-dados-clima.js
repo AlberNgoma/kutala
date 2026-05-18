@@ -30,7 +30,8 @@ module.exports = {
         allowNull: false,
         references: { model: 'bairro', key: 'id' },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        unique: true
       },
 
       createdAt: {

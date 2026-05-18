@@ -17,6 +17,7 @@ function classificarNivel(chuva, humidade) {
     return null
 }
 
+
 cron.schedule("*/10 * * * * *", async () => {
     console.log("Cron job a funcionar");
 
@@ -30,16 +31,47 @@ cron.schedule("*/10 * * * * *", async () => {
                 chuva: dados.rain ? dados.rain["1h"] || dados.rain["3h"] : 0,
                 temperatura: dados.main.temp,
                 humidade: dados.main.humidity,
-                descricao_clima: dados.weather[0].description
+                descricao_clima: dados.weather[0].description 
             }
 
-            await db.dados_clima.create({
-                chuva: clima.chuva,
-                temperatura: clima.temperatura,
-                humidade: clima.humidade,
-                descricao_clima: clima.descricao_clima,
-                bairro_id: bairro.id
-            });
+            const dadosExistente = await db.dados_clima.findOne({
+                where: {
+                    bairro_id: bairro.id
+                }
+            })
+
+
+            if (dadosExistente) {
+
+                const valorActualizado =
+                    dadosExistente.chuva !== clima.chuva ||
+                    dadosExistente.temperatura !== clima.temperatura ||
+                    dadosExistente.humidade !== clima.humidade ||
+                    dadosExistente.descricao_clima !== clima.descricao_clima;
+
+                if (valorActualizado) {
+                    await dadosExistente.update({
+                        chuva: clima.chuva,
+                        temperatura: clima.temperatura,
+                        humidade: clima.humidade,
+                        descricao_clima: clima.descricao_clima
+                    })
+                    console.log("Dados actualizados com sucesso!")
+                } else {
+                    console.log("Nenhuma actualização")
+                }
+
+
+            } else {
+
+                await db.dados_clima.create({
+                    chuva: clima.chuva,
+                    temperatura: clima.temperatura,
+                    humidade: clima.humidade,
+                    descricao_clima: clima.descricao_clima,
+                    bairro_id: bairro.id
+                })
+            }
 
             console.log(`Dados do bairro ${bairro.nome} armazenados`);
 
@@ -76,5 +108,5 @@ cron.schedule("*/10 * * * * *", async () => {
         }
     }
 
-    
+
 });
