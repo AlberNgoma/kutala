@@ -17,6 +17,10 @@ function classificarNivel(chuva, humidade) {
     return null
 }
 
+function esperar(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 
 cron.schedule("*/10 * * * * *", async () => {
     console.log("Cron job a funcionar");
@@ -31,7 +35,7 @@ cron.schedule("*/10 * * * * *", async () => {
                 chuva: dados.rain ? dados.rain["1h"] || dados.rain["3h"] : 0,
                 temperatura: dados.main.temp,
                 humidade: dados.main.humidity,
-                descricao_clima: dados.weather[0].description 
+                descricao_clima: dados.weather[0].description
             }
 
             const dadosExistente = await db.dados_clima.findOne({
@@ -106,6 +110,8 @@ cron.schedule("*/10 * * * * *", async () => {
 
             console.log(`Erro ao processar bairro ${bairro.nome}:`, error.message);
         }
+
+        esperar(4000)
     }
 
 

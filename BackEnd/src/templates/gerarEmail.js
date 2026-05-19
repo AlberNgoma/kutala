@@ -1,4 +1,3 @@
-
 function gerarEmail({ bairroNome, nivel }) {
     return (
         `<div style="font-family: Arial, sans-serif; background:#f4f4f4; padding:20px;">
