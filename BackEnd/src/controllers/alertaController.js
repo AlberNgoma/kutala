@@ -111,7 +111,7 @@ module.exports = {
 
 
         } catch (error) {
-            console.log("Erro ao listar todos os alertas");
+            console.log("Erro ao listar todos os alertas", error);
             return res.status(500).json({ error: "Erro ao listar todos os alertas" })
         }
     },
