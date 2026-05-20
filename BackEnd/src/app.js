@@ -5,6 +5,7 @@ const cors = require("cors");
 const cron = require("node-cron")
 const path = require("path");
 
+
 const loginRoute = require("./routes/loginRoute");
 const cidadaoRoute = require("./routes/cidadaoRoute");
 const comentarioRoute = require("./routes/comentarioRoute");
@@ -15,6 +16,7 @@ const municipiosRoute = require("./routes/municipioRoute");
 const bairrosRoute = require("./routes/bairroRoute");
 const riscoInundacaoRoute = require("./routes/riscoInundacaoRoute")
 const climaRoute = require("./routes/climaRoute");
+
 //require("./jobs/climaJob");
 
 
@@ -37,8 +39,6 @@ app.use('/', municipiosRoute);
 app.use('/', bairrosRoute);
 app.use('/', riscoInundacaoRoute)
 app.use('/', climaRoute);
-
-
 
 
 
