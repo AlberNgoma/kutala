@@ -21,7 +21,12 @@ const climaRoute = require("./routes/climaRoute");
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: [
+        "http://localhost:5000",
+        "https://kutala-backend.onrender.com"
+    ]
+}));
 app.use(express.json())
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
