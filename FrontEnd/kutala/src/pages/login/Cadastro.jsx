@@ -1,4 +1,5 @@
 import banner from "../../assets/banner.png"
+import background from "../../assets/banner2.webp";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import alert from "../../Alerts";
@@ -112,10 +113,13 @@ function Cadastro() {
         <>
 
 
-            <div className="min-h-screen flex items-center justify-center  bg-cover bg-[linear-gradient(to_top,rgb(0,0,0),rgba(0,0,0,0.53)),url('./src/assets/banner2.webp')]">
+            <div style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.53),rgb(0,0,0)), url(${background})`
+
+            }} className="min-h-screen flex items-center justify-center bg-cover">
                 <div className="bg-gray-50 w-full max-w-3xl flex-col md:flex-row rounded flex justify-center items-center mx-4">
                     <div className="hidden md:flex w-full md:w-1/2 p-6 justify-center items-center">
-                        <img className="w-full" src={banner}></img>
+                        <img className="w-full" alt="image banner" src={banner}></img>
                     </div>
 
 

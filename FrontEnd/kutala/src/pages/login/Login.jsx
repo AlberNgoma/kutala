@@ -1,4 +1,5 @@
 import banner from "../../assets/banner.png"
+import background from "../../assets/banner2.webp";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import login from "../../services/Login/LoginService"
@@ -85,12 +86,15 @@ function Login() {
                     <ClipLoader size={60} color="#041736" />
                 </div>
             ) : (
-                <div className="min-h-screen flex items-center justify-center bg-cover bg-[linear-gradient(to_top,rgb(0,0,0),rgba(0,0,0,0.53)),url('./src/assets/banner2.webp')]">
+                <div style={{
+                    backgroundImage : `linear-gradient(rgba(0,0,0,0.53),rgb(0,0,0)), url(${background})`
+
+                }} className="min-h-screen flex items-center justify-center bg-cover">
 
                     <div className="bg-gray-50 w-full max-w-3xl rounded flex flex-col md:flex-row justify-center items-center mx-4">
 
                         <div className="hidden md:flex w-full md:w-1/2 p-6 justify-center items-center">
-                            <img src={banner} className="w-full" />
+                           <img className="w-full" alt="image banner" src={banner}></img>
                         </div>
 
                         <div className="bg-gray-900 w-full md:w-1/2 p-6 shadow-lg rounded md:rounded-none md:rounded-r">
