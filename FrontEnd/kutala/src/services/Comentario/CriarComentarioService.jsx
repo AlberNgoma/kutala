@@ -1,10 +1,10 @@
 import axios from "axios";
-const API = "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 const token = localStorage.getItem("token")
 
 
 async function criarComentario(data) {
-    const token = localStorage.getItem("token"); // ✅ lê SEMPRE o token atual
+    const token = localStorage.getItem("token");
 
     return await axios.post(`${API}/comentario`, data, {
         headers: {
