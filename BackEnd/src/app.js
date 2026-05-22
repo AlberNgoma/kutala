@@ -22,9 +22,9 @@ const climaRoute = require("./routes/climaRoute");
 
 const app = express();
 app.use(cors({
-    origin: [
-        "http://localhost:5000",
-        "https://kutala-backend.onrender.com"
+    origin:[
+        "http://http://localhost:5173",
+        "https://kutala.vercel.app"
     ]
 }));
 app.use(express.json())
