@@ -1,3 +1,5 @@
 BackEnd/node_modules
 BackEnd/.env
-FrontEnd/node_modules
+FrontEnd/kutala/node_modules
+FrontEnd/kutala/.env.production
+FrontEnd/kutala/.env.development
