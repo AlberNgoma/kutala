@@ -33,7 +33,7 @@ function Login() {
             };
 
             const resposta = await login(dados);
-            setLoading(false)
+            
 
             const token = resposta.data.token;
             const usuario = {
@@ -53,9 +53,10 @@ function Login() {
             }
 
             alert.success("Login feito com sucesso")
+            console.log(resposta)
 
         } catch (error) {
-            console.log("Erro ao fazer login")
+            console.log("Erro ao fazer login ", error)
             if (error.response) {
                 const status = error.response.status;
 
@@ -70,6 +71,8 @@ function Login() {
                 console.error("Erro de conexão:", error);
                 alert.error("Erro de conexão com o servidor.");
             }
+        }finally{
+            setLoading(false)
         }
 
     }
