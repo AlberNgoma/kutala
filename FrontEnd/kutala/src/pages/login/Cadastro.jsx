@@ -259,7 +259,7 @@ function Cadastro() {
                              hover:text-black font-medium rounded
                             font-outfit cursor-pointer" onClick={fazerCadastro}
                                 disabled={saving}>
-                                {saving ? <ClipLoader /> : "Criar Conta"}
+                                {saving ? <ClipLoader size={22} /> : "Criar Conta"}
                             </button>
                         </div>
 

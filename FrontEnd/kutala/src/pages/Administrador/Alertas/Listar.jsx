@@ -149,7 +149,7 @@ function Listar() {
                             </input>
 
 
-                            <select className="w-full md:w-60 border w-70 rounded-lg p-2 font-outfitfocus: outline-none border  shadow-lg border-gray-400"
+                            <select className="w-full md:w-60  rounded-lg p-2 font-outfitfocus: outline-none border  shadow-lg border-gray-400"
                                 onChange={(e) => setRisco(e.target.value)}>
 
 
