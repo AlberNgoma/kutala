@@ -5,25 +5,24 @@ import { FaCheckSquare } from "react-icons/fa";
 function MapLegend() {
     return (
         <>
-            <div className="w-48 h-55 bg-white shadow-3xl absolute z-[1000] bottom-5 right-0 p-3 items-center flex-col rounded-md">
-                <div className="w-full h-10 flex items-center justify-center">
-                    <h2 className="font-barlow font-medium text-xl">Legenda</h2>
+           <div className=" bg-white shadow-3xl absolute z-1000 bottom-6 right-0 p-3 items-center justify-center flex-col rounded-md">
+                <div className="w-full  flex items-center justify-center">
+                    <h2 className="font-barlow font-medium text-xl py-1">Legenda</h2>
                 </div>
 
-                <div className="w-full h-40 space-y-3">
+                <div className="space-y-2">
 
                     <div className="flex items-center gap-2">
-                        <div className="bg-red-600 w-10 h-4 p-5 rounded-md">
-                            
-                        </div>
+                        <div className="bg-red-600 p-4 rounded-md"></div>
+                        
                         <p className="font-bold text-red-600 font-google flex items-center justify-center text-lg">Risco <IoMdAlert className=" mx-1"/></p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className="bg-yellow-400 w-10 h-4 p-5 rounded-md"></div>
+                        <div className="bg-yellow-400 p-4 rounded-md"></div>
                         <p className="font-bold text-yellow-400 font-google flex items-center justify-center text-lg">Alerta <TbAlertTriangleFilled className=" mx-1"/></p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className="bg-green-500 w-10 h-4 p-5 rounded-md"></div>
+                        <div className="bg-green-500 p-4 rounded-md"></div>
                         <p className="font-bold text-green-500 font-google flex items-center justify-center text-lg">Seguro <FaCheckSquare className="mx-1"/></p>
                     </div>
 
