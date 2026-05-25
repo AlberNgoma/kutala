@@ -13,6 +13,7 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(false)
     const [verSenha, setVerSenha] = useState(false);
 
 
@@ -24,8 +25,8 @@ function Login() {
         }
 
         try {
-            setLoading(true)
 
+            setSaving(true)
             const dados = {
                 email: email.trim(),
                 password
@@ -33,7 +34,7 @@ function Login() {
             };
 
             const resposta = await login(dados);
-            
+
 
             const token = resposta.data.token;
             const usuario = {
@@ -71,9 +72,10 @@ function Login() {
                 console.error("Erro de conexão:", error);
                 alert.error("Erro de conexão com o servidor.");
             }
-        }finally{
-            setLoading(false)
+        } finally {
+            setSaving(false)
         }
+
 
     }
 
@@ -83,88 +85,84 @@ function Login() {
 
     return (
         <>
-            {loading ? (
-                <div className="w-full h-screen bg-white/20 flex items-center justify-center flex-col space-y-3">
-                    <p className="font-outfit font-medium text-xl">Entrando...</p>
-                    <ClipLoader size={60} color="#041736" />
-                </div>
-            ) : (
-                <div style={{
-                    backgroundImage : `linear-gradient(rgba(0,0,0,0.53),rgb(0,0,0)), url(${background})`
+            <div style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.53),rgb(0,0,0)), url(${background})`
 
-                }} className="min-h-screen flex items-center justify-center bg-cover">
+            }} className="min-h-screen flex items-center justify-center bg-cover">
 
-                    <div className="bg-gray-50 w-full max-w-3xl rounded flex flex-col md:flex-row justify-center items-center mx-4">
+                <div className="bg-gray-50 w-full max-w-3xl rounded flex flex-col md:flex-row justify-center items-center mx-4">
 
-                        <div className="hidden md:flex w-full md:w-1/2 p-6 justify-center items-center">
-                           <img className="w-full" alt="image banner" src={banner}></img>
+                    <div className="hidden md:flex w-full md:w-1/2 p-6 justify-center items-center">
+                        <img className="w-full" alt="image banner" src={banner}></img>
+                    </div>
+
+                    <div className="bg-gray-900 w-full md:w-1/2 p-6 shadow-lg rounded md:rounded-none md:rounded-r">
+                        <h2 className="font-outfit text-2xl md:text-3xl text-white text-center">Login</h2>
+
+                        <div className="space-y-2 mt-4">
+                            <p className="font-outfit text-gray-50">E-mail :</p>
+                            <input
+                                type="text"
+                                placeholder="Insira o seu email"
+                                className="w-full px-2 py-2 border border-gray-300 rounded text-gray-100 placeholder:font-outfit placeholder-gray-400"
+                                value={email.trim()}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                         </div>
 
-                        <div className="bg-gray-900 w-full md:w-1/2 p-6 shadow-lg rounded md:rounded-none md:rounded-r">
-                            <h2 className="font-outfit text-2xl md:text-3xl text-white text-center">Login</h2>
+                        <div className="space-y-2 mt-3 mb-4">
+                            <p className="font-outfit text-gray-50">Palavra Passe :</p>
 
-                            <div className="space-y-2 mt-4">
-                                <p className="font-outfit text-gray-50">E-mail :</p>
+                            <div className="relative">
                                 <input
-                                    type="text"
-                                    placeholder="Insira o seu email"
+                                    type={verSenha ? "text" : "password"}
+                                    placeholder="***********"
                                     className="w-full px-2 py-2 border border-gray-300 rounded text-gray-100 placeholder:font-outfit placeholder-gray-400"
-                                    value={email.trim()}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
-                            </div>
 
-                            <div className="space-y-2 mt-3 mb-4">
-                                <p className="font-outfit text-gray-50">Palavra Passe :</p>
-
-                                <div className="relative">
-                                    <input
-                                        type={verSenha ? "text" : "password"}
-                                        placeholder="***********"
-                                        className="w-full px-2 py-2 border border-gray-300 rounded text-gray-100 placeholder:font-outfit placeholder-gray-400"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-
-                                    <button onClick={() => setVerSenha(!verSenha)} className="text-blue-500 absolute right-2 top-3 text-lg cursor-pointer">
-                                        {verSenha ? (
-                                            <MdRemoveRedEye />
-                                        ) : (
-                                            <IoMdEyeOff />
-                                        )}
-                                    </button>
-                                </div>
-
-                            </div>
-
-                            <div className="mt-7">
-                                <button
-                                    className="w-full bg-gray-50 py-2 hover:bg-gray-200 hover:text-black font-medium rounded font-outfit cursor-pointer"
-                                    onClick={fazerLogin}
-                                    type="button"
-                                >
-                                    Entrar
+                                <button onClick={() => setVerSenha(!verSenha)} className="text-blue-500 absolute right-2 top-3 text-lg cursor-pointer">
+                                    {verSenha ? (
+                                        <MdRemoveRedEye />
+                                    ) : (
+                                        <IoMdEyeOff />
+                                    )}
                                 </button>
                             </div>
 
-                            <div className="flex items-center py-2">
-                                <div className="flex-1 border-t border-gray-300"></div>
-                                <span className="px-3 text-gray-500">ou</span>
-                                <div className="flex-1 border-t border-gray-300"></div>
-                            </div>
+                        </div>
 
-                            <div className="pb-4">
-                                <button
-                                    className="w-full bg-blue-800 py-2 text-gray-50 hover:bg-blue-900 font-medium rounded font-outfit cursor-pointer"
-                                    onClick={() => navigate("/criar-conta")}
-                                >
-                                    Criar Conta
-                                </button>
-                            </div>
+                        <div className="mt-7">
+                            <button
+                                className="flex justify-center items-center w-full bg-gray-50 py-2 hover:bg-gray-200 hover:text-black font-medium rounded font-outfit cursor-pointer"
+                                onClick={fazerLogin}
+                                disabled={saving}
+                                type="button"
+                            >
+                                {saving ? <ClipLoader size={24} />  : "Entrar"}
+
+                            </button>
+                        </div>
+
+                        <div className="flex items-center py-2">
+                            <div className="flex-1 border-t border-gray-300"></div>
+                            <span className="px-3 text-gray-500">ou</span>
+                            <div className="flex-1 border-t border-gray-300"></div>
+                        </div>
+
+                        <div className="pb-4">
+                            <button
+                                className="w-full bg-blue-800 py-2 text-gray-50 hover:bg-blue-900 font-medium rounded font-outfit cursor-pointer"
+                                onClick={() => navigate("/criar-conta")}
+                            >
+                                Criar Conta
+                            </button>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
+
 
 
 
