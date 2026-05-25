@@ -7,6 +7,7 @@ import cadastrar from "../../services/Login/CadastrarService";
 import getBairro from "../../services/Bairro/BairrosService"
 import { RxEyeOpen } from "react-icons/rx";
 import { IoEyeOffOutline } from "react-icons/io5";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -24,7 +25,7 @@ function Cadastro() {
     const [bairroSelecionado, setBairroSelecionado] = useState(null);
     const [pesquisar, setPesquisar] = useState("");
     const [verSenha, setVerSenha] = useState(false);
-
+    const [saving, setSaving] = useState(false);
 
 
     async function fazerCadastro() {
@@ -57,6 +58,7 @@ function Cadastro() {
 
 
         try {
+            setSaving(true)
             const dados = { nome, email, password, n_bi, bairro_id };
             await cadastrar(dados);
 
@@ -66,6 +68,8 @@ function Cadastro() {
 
         } catch (error) {
             console.log("Erro ao criar cidadão ", error)
+        } finally {
+            setSaving(false)
         }
     }
 
@@ -253,8 +257,9 @@ function Cadastro() {
                         <div className="mt-7 flex justify-center items-center">
                             <button className="w-full bg-gray-50 py-2 hover:bg-gray-200
                              hover:text-black font-medium rounded
-                            font-outfit cursor-pointer" onClick={fazerCadastro}>
-                                Criar Conta
+                            font-outfit cursor-pointer" onClick={fazerCadastro}
+                                disabled={saving}>
+                                {saving ? <ClipLoader /> : "Criar Conta"}
                             </button>
                         </div>
 
@@ -269,8 +274,9 @@ function Cadastro() {
 
                         <div className="mt-1 flex justify-center items-center">
                             <button className="w-full bg-blue-800 py-2 text-gray-50 hover:bg-blue-900 font-medium rounded font-outfit cursor-pointer"
-                                onClick={() => navigate("/")}
-                            >Entrar</button>
+                                onClick={() => navigate("/")}>
+                                Entrar
+                            </button>
                         </div>
 
 
