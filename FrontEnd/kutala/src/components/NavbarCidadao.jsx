@@ -32,10 +32,10 @@ function NavbarCidadao() {
 
     return (
         <>
-            <div className="bg-blue-50 shadow-md w-full h-18 flex justify-around absolute z-[2000]">
+            <div className="bg-sky-50  shadow-md w-full flex justify-around absolute z-2000">
 
                 <section className="cursor-pointer flex justift-center items-center">
-                    <img src={logo} className="w-12"></img>
+                    <img src={logo} className="w-15 p-3"></img>
                 </section>
 
 

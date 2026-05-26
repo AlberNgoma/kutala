@@ -199,7 +199,7 @@ function Mapa() {
             <div className="relative w-full h-screen flex items-center justify-center">
 
 
-                <div className="absolute z-[1000] px-4 h-9 md:w-1/2 w-full top-1/3 flex items-center justify-center">
+                <div className="absolute z-1000 px-4 h-9 md:w-1/2 w-full top-1/4 flex items-center justify-center">
                     <input
                         type="text"
                         placeholder="Pesquise por Bairros..."
