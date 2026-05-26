@@ -5,7 +5,7 @@ import { FaCheckSquare } from "react-icons/fa";
 function MapLegend() {
     return (
         <>
-           <div className=" bg-white shadow-3xl absolute z-1000 bottom-6 right-0 p-3 items-center justify-center flex-col rounded-md">
+           <div className=" bg-white shadow-3xl absolute z-1000 bottom-10 right-0 p-3 items-center justify-center flex-col rounded-md">
                 <div className="w-full  flex items-center justify-center">
                     <h2 className="font-barlow font-medium text-xl py-1">Legenda</h2>
                 </div>

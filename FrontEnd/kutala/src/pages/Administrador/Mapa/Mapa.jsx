@@ -136,7 +136,7 @@ function Mapa() {
 
             <div className="relative w-full h-screen">
 
-                <div className="p-4 md:p-0 ">
+                <div className="p-4 md:p-0 absolute z-1000">
                     <GiHamburgerMenu onClick={() => abrirSidebar()} className="text-xl md:hidden relative cursor-pointer hover:scale-120 transition-all" />
                     {sideBar && (
                         <div
@@ -146,7 +146,7 @@ function Mapa() {
                     )}
                 </div>
 
-                <div className="absolute z-[1000] px-4 h-9 md:w-1/2 w-full top-1/5 md:right-1/4 flex items-center justify-center">
+                <div className="absolute z-1000 px-4 h-9 md:w-1/2 w-full top-1/5 md:right-1/4 flex items-center justify-center">
                     <input
                         type="text"
                         placeholder="Pesquise por Bairros..."
@@ -232,7 +232,7 @@ function Mapa() {
             </div>
             {modal && (
                 <>
-                    <div className=" bg-black/50 z-[1000] p-6 absolute w-full min-h-screen flex items-center justify-center">
+                    <div className=" bg-black/50 z-1000 p-6 absolute w-full min-h-screen flex items-center justify-center">
                         <div className="bg-white w-100 h-120 rounded-lg">
 
                             <div className="w-full h-10 flex justify-end items-center px-3">
@@ -297,7 +297,7 @@ function Mapa() {
                                                         )}
                                                         {fotoAmpliada && (
                                                             <div
-                                                                className="fixed inset-0 bg-black/40 z-[3000] flex justify-center items-center"
+                                                                className="fixed inset-0 bg-black/40 z-3000 flex justify-center items-center"
                                                                 onClick={() => setFotoAmpliada(null)} // clica fora para fechar
                                                             >
                                                                 <img
