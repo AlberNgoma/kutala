@@ -292,8 +292,8 @@ function Mapa() {
 
             {modal && (
                 <>
-                    <div className="fixed inset-0 bg-black/50 z-[2000] flex justify-center items-center ">
-                        <div className="bg-white w-110 h-125 rounded-lg transform transition-all animate-popIn">
+                    <div className="fixed inset-0 bg-black/40 z-2000 p-3 flex justify-center items-center ">
+                        <div className="bg-white w-90 h-125 rounded-lg transform transition-all animate-popIn">
 
                             <div className="w-full h-10 flex justify-end items-center px-3">
                                 <IoIosCloseCircle className="text-2xl cursor-pointer hover:text-red-600"
