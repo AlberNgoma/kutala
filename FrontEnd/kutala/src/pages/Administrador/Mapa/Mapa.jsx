@@ -137,7 +137,7 @@ function Mapa() {
             <div className="relative w-full h-screen">
 
                 <div className="p-4 md:p-0 absolute z-1000">
-                    <GiHamburgerMenu onClick={() => abrirSidebar()} className="text-xl md:hidden relative cursor-pointer hover:scale-120 transition-all" />
+                    <GiHamburgerMenu onClick={() => abrirSidebar()} className="text-xl text-white md:hidden relative cursor-pointer hover:scale-120 transition-all" />
                     {sideBar && (
                         <div
                             className="fixed inset-0 bg-black/50 z-40 md:hidden"
