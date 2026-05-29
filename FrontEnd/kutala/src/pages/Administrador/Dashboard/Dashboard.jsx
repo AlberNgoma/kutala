@@ -3,6 +3,7 @@ import TotalGovernador from "../../../services/Governador/TotalGovService"
 import TotalCidadao from "../../../services/Cidadao/TotalCidService";
 import TotalAlerta from "../../../services/Alerta/TotalAlertService";
 import TotalRisc from "../../../services/Risco/TotalRiscService";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -27,6 +28,7 @@ function Dashboard() {
     const [totalAlert, setTotalAlert] = useState([]);
     const [totalRisc, setTotalRisc] = useState([]);
     const [sideBar, setSideBar] = useState(false);
+    const [loader, setLoader] = useState(false)
 
 
 
@@ -35,7 +37,7 @@ function Dashboard() {
     useEffect(() => {
         async function todosGov() {
             try {
-
+                setLoader(true)
                 const resposta = await TotalGovernador();
                 setTotalGov(resposta.data);
 
@@ -43,13 +45,13 @@ function Dashboard() {
             } catch (error) {
                 console.log("Erro ao buscar o total de governadores")
             }
-
+            setLoader(false)
 
         }
 
         async function todosCid() {
             try {
-
+                setLoader(true)
                 const resposta = await TotalCidadao();
                 setTotalCid(resposta.data);
 
@@ -59,22 +61,24 @@ function Dashboard() {
             } catch (error) {
                 console.log("Erro ao calcular todal de cidadãos ", error);
             }
+            setLoader(false)
         }
 
         async function todosAlert() {
             try {
-
+                setLoader(true)
                 const resposta = await TotalAlerta();
                 setTotalAlert(resposta.data);
 
             } catch (error) {
                 console.log("Erro ao calcular total de alertas ", error);
             }
+            setLoader(false)
         }
 
         async function todosRisc() {
             try {
-
+                setLoader(true)
                 const resposta = await TotalRisc();
                 setTotalRisc(resposta.data)
 
@@ -82,6 +86,7 @@ function Dashboard() {
             } catch (error) {
                 console.log("Erro ao calcular total de riscos ", error)
             }
+            setLoader(false)
         }
 
         todosAlert()
@@ -123,7 +128,11 @@ function Dashboard() {
                                 <p className="font-outfit text-xl text-gray-800 font-medium">Cidadãos</p>
                                 <FaUsers className="text-3xl text-blue-400" />
                             </div>
-                            <h3 className="text-3xl font-bold font-google text-gray-800">{totalCid}</h3>
+                            {loader ? (
+                                <ClipLoader size={25} />
+                            ) : (
+                                <h3 className="text-3xl font-bold font-google text-gray-800">{totalCid}</h3>
+                            )}
                         </div>
 
                         <div className="bg-white rounded-md border-l-6 border-green-500 p-6 cursor-pointer hover:bg-gray-100 shadow-md transition-all">
@@ -131,7 +140,14 @@ function Dashboard() {
                                 <p className="font-outfit text-xl text-gray-800 font-medium">Governadores</p>
                                 <FaUserTie className="text-3xl text-green-500" />
                             </div>
-                            <h3 className="text-3xl font-bold font-google text-gray-800">{totalGov}</h3>
+
+                            {loader ? (
+                                <div className="w-full p-1 flex justify-center items-center">
+                                    <ClipLoader size={25} />
+                                </div>
+                            ) : (
+                                <h3 className="text-3xl font-bold font-google text-gray-800">{totalGov}</h3>
+                            )}
                         </div>
 
                         <div className="bg-white rounded-md border-l-6 border-yellow-400 p-6 cursor-pointer hover:bg-gray-100 shadow-md transition-all">
@@ -139,7 +155,11 @@ function Dashboard() {
                                 <p className="font-outfit text-xl text-gray-800 font-medium">Alertas</p>
                                 <RiAlertLine className="text-3xl text-yellow-400" />
                             </div>
-                            <h3 className="text-3xl font-bold font-google text-gray-800">{totalAlert}</h3>
+                            {loader ? (
+                                <ClipLoader size={25} />
+                            ) : (
+                                <h3 className="text-3xl font-bold font-google text-gray-800">{totalAlert}</h3>
+                            )}
                         </div>
 
                         <div className="bg-white rounded-md border-l-6 border-red-600 p-6 cursor-pointer hover:bg-gray-100 shadow-md transition-all">
@@ -147,13 +167,17 @@ function Dashboard() {
                                 <p className="font-outfit text-xl  text-gray-800 font-medium">Riscos</p>
                                 <IoAlertCircleOutline className="text-3xl text-red-600" />
                             </div>
-                            <h3 className="text-3xl font-bold font-google text-gray-800">{totalRisc}</h3>
+                            {loader ? (
+                                <ClipLoader size={25} />
+                            ) : (
+                                <h3 className="text-3xl font-bold font-google text-gray-800">{totalRisc}</h3>
+                            )}
                         </div>
                     </div>
 
                     <div className="flex flex-col md:flex-row gap-4 w-full flex-1">
 
-                      
+
                         <div className="flex flex-col gap-4 w-full md:w-2/3">
                             <div className="bg-white p-5 shadow-xl rounded-md flex-1 fl6x flex-col justify-center items-center cursor-pointer">
                                 <h2 className="font-google text-lg text-center mb-2">Municípios Afetados</h2>
@@ -170,7 +194,7 @@ function Dashboard() {
                             </div>
                         </div>
 
-                        
+
                         <div className="bg-white shadow-xl rounded-lg w-full md:w-1/3 p-5 flex flex-col justify-center items-center">
                             <h2 className="font-google text-xl mb-4">Níveis de alerta</h2>
                             <div className="w-full h-full flex items-center justify-center">
