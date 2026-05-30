@@ -17,7 +17,7 @@ const bairrosRoute = require("./routes/bairroRoute");
 const riscoInundacaoRoute = require("./routes/riscoInundacaoRoute")
 const climaRoute = require("./routes/climaRoute");
 
-require("./jobs/climaJob");
+//require("./jobs/climaJob");
 
 
 const app = express();
