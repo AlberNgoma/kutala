@@ -130,7 +130,7 @@ function Dashboard() {
                             </div>
                             {loader ? (
                                 <ClipLoader size={25} />
-                            ) : (
+                            ) :  (
                                 <h3 className="text-3xl font-bold font-google text-gray-800">{totalCid}</h3>
                             )}
                         </div>
