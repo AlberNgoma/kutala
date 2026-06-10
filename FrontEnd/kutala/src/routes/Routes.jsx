@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "../pages/login/Login";
 import Cadastro from "../pages/login/Cadastro";
+import ForgotPassword from "../pages/login/Forgot-pass";
 
 
 import RotaAdmin from "./RotaAdmin";
@@ -28,6 +29,7 @@ function Rotas() {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/criar-conta" element={<Cadastro />} />
+                <Route path="/recuperar-senha" element={<ForgotPassword/>}/>
 
 
                 <Route element={<RotaAdmin/>}>

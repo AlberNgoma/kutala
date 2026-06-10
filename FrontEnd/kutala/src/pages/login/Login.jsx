@@ -7,6 +7,7 @@ import alert from "../../Alerts";
 import { ClipLoader } from "react-spinners";
 import { MdRemoveRedEye } from "react-icons/md";
 import { IoMdEyeOff } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 function Login() {
     const navigate = useNavigate();
@@ -110,7 +111,7 @@ function Login() {
                             />
                         </div>
 
-                        <div className="space-y-2 mt-3 mb-4">
+                        <div className="space-y-2 mt-3">
                             <p className="font-outfit text-gray-50">Palavra Passe :</p>
 
                             <div className="relative">
@@ -133,23 +134,33 @@ function Login() {
 
                         </div>
 
-                        <div className="mt-7">
+                        <div className="w-full p-2 flex justify-end items-center">
+                            <p className="text-sm text-blue-100 hover:text-blue-400">
+                                <Link to="/recuperar-senha">Esqueci a palavra passe?</Link>
+                            </p>
+                        </div>
+
+                        <div>
                             <button
                                 className="flex justify-center items-center w-full bg-gray-50 py-2 hover:bg-gray-200 hover:text-black font-medium rounded font-outfit cursor-pointer"
                                 onClick={fazerLogin}
                                 disabled={saving}
                                 type="button"
                             >
-                                {saving ? <ClipLoader size={24} />  : "Entrar"}
+                                {saving ? <ClipLoader size={24} /> : "Entrar"}
 
                             </button>
                         </div>
+
+
 
                         <div className="flex items-center py-2">
                             <div className="flex-1 border-t border-gray-300"></div>
                             <span className="px-3 text-gray-500">ou</span>
                             <div className="flex-1 border-t border-gray-300"></div>
                         </div>
+
+
 
                         <div className="pb-4">
                             <button
