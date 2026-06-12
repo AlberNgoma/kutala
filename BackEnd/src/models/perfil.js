@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     nome: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    tipo: DataTypes.ENUM('ADMIN', 'CIDADAO', 'GOVERNADOR')
+    tipo: DataTypes.ENUM('ADMIN', 'CIDADAO', 'GOVERNADOR'),
+    resetToken : DataTypes.STRING,
+    tokenExpires: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'perfil',
