@@ -2,6 +2,8 @@ const db = require("../models/index");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const transporter = require("../config/email");
+const { where } = require("sequelize");
 
 
 
@@ -58,14 +60,15 @@ module.exports = {
         const { email } = req.body
         try {
             const user = await db.perfil.findOne({ where: { email } })
-            
+
 
             if (!user) {
                 return res.status(404).json("Este email não existe")
             }
 
             const token = crypto.randomBytes(32).toString("hex");
-            const expires = Date.now() + 15 * 60 * 1000;     
+            const expires = Date.now() + 15 * 60 * 1000;
+            const link = `http://localhost:5000/recuperar-senha/${token}`
 
             await db.perfil.update(
                 {
@@ -79,9 +82,24 @@ module.exports = {
 
 
             )
-            
-            return res.status(201).json("Token criado com sucesso!")
 
+            /* await transporter.sendMail({
+                 from: "kutala",
+                 to: user.email,
+                 subject: "Recuperação de senha",
+                 html: `
+         <h2>Recuperação de senha</h2>
+         <p>Clique no botão abaixo para definir uma nova senha:</p>
+ 
+         <a href="${link}">
+             Redefinir senha
+         </a>
+ 
+         <p>Este link expira em 15 minutos.</p>
+     `
+             });*/
+
+            return res.status(201).json("Token criado com sucesso!")
 
 
 
@@ -89,5 +107,44 @@ module.exports = {
         } catch (error) {
             console.log("Erro ao recuperar conta ", error)
         }
+
+
+
+    },
+
+    async redefinirSenha(req, res) {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        const user = await db.perfil.findOne(
+            {
+                where: {
+                    resetToken: token
+                }
+            }
+        )
+
+        if (!user) {
+            return res.status(400).json("Este token é inválido")
+        }
+
+        if (user.tokenExpires < Date.now()) {
+            return res.status(400).json("Este token expirou")
+        }
+
+        const passwordSegura = await bcrypt.hash(password, 10);
+
+        await db.perfil.update(
+            {
+                password: passwordSegura,
+                resetToken: null,
+                tokenExpires: null
+            },
+
+            { where: { id: user.id } }
+        )
+
+        return res.status(201).json("Senha alterada com sucesso")
+
     }
 }
