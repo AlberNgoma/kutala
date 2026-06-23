@@ -69,7 +69,7 @@ module.exports = {
 
             const token = crypto.randomBytes(32).toString("hex");
             const expires = Date.now() + 15 * 60 * 1000;
-            const link = `http://localhost:5000/redefinir-senha/${token}`
+            const link = `http://localhost:5173/redefinir-senha/${token}`
 
             await db.perfil.update(
                 {
@@ -84,7 +84,7 @@ module.exports = {
 
             )
 
-            /* await transporter.sendMail({
+            await transporter.sendMail({
                  from: "kutala",
                  to: user.email,
                  subject: "Recuperação de senha",
@@ -98,7 +98,7 @@ module.exports = {
   
           <p>Este link expira em 15 minutos.</p>
       `
-             });*/
+             });
 
             return res.status(201).json("Token criado com sucesso!")
 

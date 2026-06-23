@@ -4,15 +4,18 @@ import recuperConta from "../../services/Login/Recuperar-conta"
 import { useState } from "react";
 import alert from "../../Alerts"
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 
 export default function ForgotPassword() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false)
 
     async function EnviarEmail(e) {
         e.preventDefault()
         try {
+            setLoading(true)
             if (!email) {
                 return alert.error("Este campo não pode estar vazio!")
             }
@@ -23,6 +26,8 @@ export default function ForgotPassword() {
             navigate("/")
         } catch (error) {
             console.log(`Erro ${error}`)
+        } finally {
+            setLoading(false)
         }
 
     }
@@ -55,7 +60,11 @@ export default function ForgotPassword() {
 
 
                             <div className="mt-3">
-                                <button type="submit" className="flex justify-center items-center w-full bg-gray-50 py-2 hover:bg-gray-200 hover:text-black font-medium rounded font-outfit cursor-pointer">Enviar</button>
+                                <button type="submit" disabled={loading} className="flex justify-center items-center w-full bg-gray-50 py-2 hover:bg-gray-200 hover:text-black font-medium rounded font-outfit cursor-pointer">
+                                    {loading ? (
+                                        <ClipLoader size={24} />
+                                    ) : "Entrar"}
+                                </button>
                             </div>
 
                             <div className="flex items-center py-2">

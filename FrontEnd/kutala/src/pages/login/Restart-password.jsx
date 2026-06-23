@@ -5,20 +5,22 @@ import { useState } from "react";
 import Reset from "../../services/Login/Resetet-password";
 import { useParams } from "react-router-dom";
 import alert from "../../Alerts";
+import { useNavigate } from "react-router-dom";
 
 export default function RestartPassword() {
 
     const [verSenha, setVerSenha] = useState(false);
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const { token } = useParams()
 
-    async function restart(e) {
-        e.preventDefault();
+    async function restart() {
 
         try {
-            await Reset(token);
-            alert.success("Senha alterada com sucesso!")
+            await Reset(token, password);
+            alert.success("Senha alterada com sucesso!");
+            navigate("/")
 
 
         } catch (error) {
@@ -44,36 +46,36 @@ export default function RestartPassword() {
 
 
 
-                    <form onSubmit={restart}>
-                        <div className="space-y-1">
-                            <p className="font-outfit text-gray-50">Insira a nova senha : </p>
-                            <div className="relative">
-                                <input type={verSenha ? "text" : "password"}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    value={password}
-                                    className="w-full px-2 py-2 border border-gray-300 rounded text-gray-100"
-                                />
+
+                    <div className="space-y-1">
+                        <p className="font-outfit text-gray-50">Insira a nova senha : </p>
+                        <div className="relative">
+                            <input type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
+                                className="w-full px-2 py-2 border border-gray-300 rounded text-gray-100"
+                            />
 
 
 
-                                <button onClick={() => setVerSenha(!verSenha)} className="text-blue-500 absolute right-4 top-3 text-lg cursor-pointer">
+                            {/* <button onClick={() => setVerSenha(!verSenha)} className="text-blue-500 absolute right-4 top-3 text-lg cursor-pointer">
                                     {verSenha ? (
                                         <IoEye />
                                     ) : (
                                         <IoMdEyeOff />
                                     )}
-                                </button>
+                                </button>*/}
 
-
-                            </div>
 
                         </div>
 
+                    </div>
 
-                        <div className="my-3">
-                            <button className="flex justify-center items-center w-full bg-gray-50 py-2 hover:bg-gray-200 hover:text-black font-medium rounded font-outfit cursor-pointer">Actualizar</button>
-                        </div>
-                    </form>
+
+                    <div className="my-3">
+                        <button onClick={restart} className="flex justify-center items-center w-full bg-gray-50 py-2 hover:bg-gray-200 hover:text-black font-medium rounded font-outfit cursor-pointer">Actualizar</button>
+                    </div>
+
 
                 </div>
 
