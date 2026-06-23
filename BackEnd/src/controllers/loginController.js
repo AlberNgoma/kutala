@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const transporter = require("../config/email");
-const { where } = require("sequelize");
 
 
 
@@ -58,8 +57,10 @@ module.exports = {
     async recuperarConta(req, res) {
 
         const { email } = req.body
+
         try {
             const user = await db.perfil.findOne({ where: { email } })
+
 
 
             if (!user) {
@@ -68,7 +69,7 @@ module.exports = {
 
             const token = crypto.randomBytes(32).toString("hex");
             const expires = Date.now() + 15 * 60 * 1000;
-            const link = `http://localhost:5000/recuperar-senha/${token}`
+            const link = `http://localhost:5000/redefinir-senha/${token}`
 
             await db.perfil.update(
                 {
@@ -88,15 +89,15 @@ module.exports = {
                  to: user.email,
                  subject: "Recuperação de senha",
                  html: `
-         <h2>Recuperação de senha</h2>
-         <p>Clique no botão abaixo para definir uma nova senha:</p>
- 
-         <a href="${link}">
-             Redefinir senha
-         </a>
- 
-         <p>Este link expira em 15 minutos.</p>
-     `
+          <h2>Recuperação de senha</h2>
+          <p>Clique no botão abaixo para definir uma nova senha:</p>
+  
+          <a href="${link}">
+              Redefinir senha
+          </a>
+  
+          <p>Este link expira em 15 minutos.</p>
+      `
              });*/
 
             return res.status(201).json("Token criado com sucesso!")

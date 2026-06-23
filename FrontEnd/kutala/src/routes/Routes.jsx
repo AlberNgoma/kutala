@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../pages/login/Login";
 import Cadastro from "../pages/login/Cadastro";
 import ForgotPassword from "../pages/login/Forgot-pass";
+import RestartPassword from "../pages/login/restart-password";
 
 
 import RotaAdmin from "./RotaAdmin";
@@ -30,6 +31,7 @@ function Rotas() {
                 <Route path="/" element={<Login />} />
                 <Route path="/criar-conta" element={<Cadastro />} />
                 <Route path="/recuperar-senha" element={<ForgotPassword/>}/>
+                <Route path="/redefinir-senha/:token" element={<RestartPassword/>}/>
 
 
                 <Route element={<RotaAdmin/>}>

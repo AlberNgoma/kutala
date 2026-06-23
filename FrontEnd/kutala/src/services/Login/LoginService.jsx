@@ -7,13 +7,3 @@ async function login(dados) {
 }
 
 export default login;
-
-
-
-
-
-
-
-
-
-
