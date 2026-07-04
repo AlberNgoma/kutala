@@ -3,6 +3,7 @@ import Login from "../pages/login/Login";
 import Cadastro from "../pages/login/Cadastro";
 import ForgotPassword from "../pages/login/Forgot-pass";
 import RestartPassword from "../pages/login/restart-password";
+import Landing from "../pages/Landing/Landing";
 
 
 import RotaAdmin from "./RotaAdmin";
@@ -28,13 +29,15 @@ function Rotas() {
         <>
 
             <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/criar-conta" element={<Cadastro />} />
-                <Route path="/recuperar-senha" element={<ForgotPassword/>}/>
-                <Route path="/redefinir-senha/:token" element={<RestartPassword/>}/>
+                <Route path="/recuperar-senha" element={<ForgotPassword />} />
+                <Route path="/redefinir-senha/:token" element={<RestartPassword />} />
+                <Route path="/" element={<Landing />} />
 
 
-                <Route element={<RotaAdmin/>}>
+
+                <Route element={<RotaAdmin />}>
 
                     <Route path="/admin/mapa" element={<Mapa />} />
                     <Route path="/admin/dashboard" element={<Dashboard />} />
@@ -50,7 +53,7 @@ function Rotas() {
 
                 </Route>
 
-                <Route element={<RotaCidadao/>}>
+                <Route element={<RotaCidadao />}>
 
                     <Route path="/cidadao/mainpage" element={<MainPage />} />
                 </Route>

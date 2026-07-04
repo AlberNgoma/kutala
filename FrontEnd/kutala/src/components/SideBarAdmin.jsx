@@ -107,7 +107,7 @@ function SideBarAdmin({ isOpen }) {
                             </section>
 
                             <section>
-                                <p className=" font-google text-gray-200 font-google hover:text-gray-300">
+                                <p className=" text-gray-200 font-google hover:text-gray-300">
                                     <Link to="/admin/listar-cidadao">Cidadãos</Link>
                                 </p>
                             </section>
@@ -121,7 +121,7 @@ function SideBarAdmin({ isOpen }) {
                             </section>
 
                             <section>
-                                <p className=" font-google text-gray-200 font-google hover:text-gray-300" >
+                                <p className="  text-gray-200 font-google hover:text-gray-300" >
                                     <Link className="flex" to="/admin/listar-alerta"> Alertas<FaCircle className="ml-2 text-red-600 w-2 animate-ping" /> </Link>
                                 </p>
                             </section>
@@ -140,7 +140,7 @@ function SideBarAdmin({ isOpen }) {
                             </section>
 
                             <section>
-                                <p className=" font-google text-gray-200 font-google hover:text-gray-300">
+                                <p className=" f text-gray-200 font-google hover:text-gray-300">
                                     <Link to="/admin/listar-riscos">Riscos de Inundação</Link>
                                 </p>
                             </section>
@@ -155,7 +155,7 @@ function SideBarAdmin({ isOpen }) {
                             </section>
 
                             <section>
-                                <p className=" font-google text-gray-200 font-google hover:text-gray-300">Definições</p>
+                                <p className=" text-gray-200 font-google hover:text-gray-300">Definições</p>
                             </section>
 
 
@@ -167,7 +167,7 @@ function SideBarAdmin({ isOpen }) {
                             </section>
 
                             <section>
-                                <p className=" font-google text-gray-200 font-google hover:text-gray-300"
+                                <p className="text-gray-200 font-google hover:text-gray-300"
                                     onClick={() => fazerLogout()}
                                 >
                                     Sair
