@@ -75,7 +75,7 @@ export default function ForgotPassword() {
 
                             <div className="mt-1">
                                 <button className="w-full bg-blue-800 py-2 text-gray-50 hover:bg-blue-900 font-medium rounded font-outfit cursor-pointer">
-                                    <Link to="/">Voltar</Link>
+                                    <Link to="/login">Voltar</Link>
                                 </button>
                             </div>
 

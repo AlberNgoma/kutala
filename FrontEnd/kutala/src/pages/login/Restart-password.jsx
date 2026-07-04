@@ -20,7 +20,7 @@ export default function RestartPassword() {
         try {
             await Reset(token, password);
             alert.success("Senha alterada com sucesso!");
-            navigate("/")
+            navigate("/login")
 
 
         } catch (error) {

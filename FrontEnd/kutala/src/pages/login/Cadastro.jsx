@@ -274,7 +274,7 @@ function Cadastro() {
 
                         <div className="mt-1 flex justify-center items-center">
                             <button className="w-full bg-blue-800 py-2 text-gray-50 hover:bg-blue-900 font-medium rounded font-outfit cursor-pointer"
-                                onClick={() => navigate("/")}>
+                                onClick={() => navigate("/login")}>
                                 Entrar
                             </button>
                         </div>
