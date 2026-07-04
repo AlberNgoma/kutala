@@ -18,15 +18,17 @@ export default function equipa() {
 
   const firstImg = {
     opacity: isInView ? 1 : 0,
-    x: isInView ? 0 : "-100%",
-    transition: { duration: 1.5 }
+    x: isInView ? 0 : 30,
+    transition: { duration: 1.5 },
+    whileInView: { opacity: 1, x: 0 }
 
   }
 
   const secondImg = {
     opacity: isInView ? 1 : 0,
-    x: isInView ? 0 : "100%",
-    transition: { duration: 1.5 }
+    x: isInView ? 0 : -30,
+    transition: { duration: 1.5 },
+    whileInView: { opacity: 1, x: 0 }
 
   }
   return (

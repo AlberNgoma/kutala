@@ -21,14 +21,16 @@ export default function Sobre() {
 
     const item = {
         opacity: isInView ? 1 : 0,
-        x: isInView ? 0 : "-100%", // Usa percentagem! Funciona perfeitamente no mobile
-        transition: { duration: 1.5 }
+        x: isInView ? 0 : -30, // Usa percentagem! Funciona perfeitamente no mobile
+        transition: { duration: 1.5 },
+         whileInView : {opacity : 1, x :0}
     };
 
     const img = {
         opacity: isInView ? 1 : 0,
-        x: isInView ? 0 : "100%", // Entra pela direita de forma segura
-        transition: { duration: 1.5 }
+        x: isInView ? 0 : 30, // Entra pela direita de forma segura
+        transition: { duration: 1.5 },
+        whileInView : {opacity : 1, x :0}
     };
 
     return (
