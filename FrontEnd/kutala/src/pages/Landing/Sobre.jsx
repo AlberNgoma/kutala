@@ -11,8 +11,7 @@ import { useInView } from "framer-motion";
 export default function Sobre() {
     // Criamos o ref para a secção inteira
     const sectionRef = useRef();
-    const isInView = useInView(sectionRef, {  amount: 0.4 }); 
-    // amount: 0.2 ativa a animação quando pelo menos 20% da secção estiver visível
+    const isInView = useInView(sectionRef); 
 
     const title = {
         opacity: isInView ? 1 : 0,

@@ -14,7 +14,7 @@ import { useInView } from "framer-motion";
 export default function equipa() {
 
   const ref = useRef();
-  const isInView = useInView(ref, { amount: 0.4 });
+  const isInView = useInView(ref);
 
   const firstImg = {
     opacity: isInView ? 1 : 0,
