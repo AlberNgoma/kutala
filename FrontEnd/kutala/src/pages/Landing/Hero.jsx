@@ -91,7 +91,7 @@ export default function Hero() {
 
                     <motion.div variants={item} className="w-full min-h-20 flex flex-col md:flex-row items-center justify-center gap-3">
                         <a href="#objectivos"><button className="bg-ouro font-outfit hover:bg-transparent hover:border border-ouro text-white rounded-full  duration-500 ease-in-out h-12 w-40 cursor-pointer flex items-center justify-center">Saber Mais <HiQuestionMarkCircle className="ml-2" /></button></a>
-                        <button className="bg-ouro font-outfit hover:bg-transparent hover:border border-ouro text-white rounded-full  duration-500 ease-in-out h-12 w-40 cursor-pointer flex items-center justify-center"><Link to="/login">Entrar</Link> <FaCircleArrowRight className="ml-2" /></button>
+                        <Link to="/login"><button className="bg-ouro font-outfit hover:bg-transparent hover:border border-ouro text-white rounded-full  duration-500 ease-in-out h-12 w-40 cursor-pointer flex items-center justify-center">Entrar <FaCircleArrowRight className="ml-2" /></button></Link>
 
                     </motion.div>
 
