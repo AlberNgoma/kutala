@@ -44,6 +44,22 @@ export default function equipa() {
         }} className="bg-cover w-full py-6  min-h-40 flex flex-col md:flex-row items-center justify-center gap-10"
           ref={ref}>
 
+          <motion.div animate={secondImg} className="w-75 bg-kutala-blue rounded-xl">
+            <img src={AndersonPhoto} className="w-full rounded-t-xl" alt="Alberto" />
+
+            <div className="flex items-center justify-center flex-col py-2">
+              <p className="font-medium text-xl text-white font-google">Coge Paiva </p>
+              <p className="text-sm text-white tracking-wide font-sn flex justify-center items-center">Engenheiro Geográfico <IoEarth className="ml-2" /> </p>
+            </div>
+
+            <div className="rounded-b-xl flex items-center justify-center gap-5 bg-kutala-blue py-2">
+              <FaLinkedin className="text-xl text-white duration-400 cursor-pointer hover:text-gray-300" />
+              <SiGmail className="text-xl text-white duration-400 cursor-pointer hover:text-gray-300" />
+              <FaGithub className="text-xl text-white duration-400 cursor-pointer hover:text-gray-300" />
+            </div>
+
+          </motion.div>
+
           <motion.div animate={firstImg} className="w-75 bg-kutala-blue rounded-xl">
             <img src={AlbertoPhoto} className="w-full rounded-t-xl" alt="Alberto" />
 
@@ -68,21 +84,6 @@ export default function equipa() {
 
           </motion.div>
 
-          <motion.div animate={secondImg} className="w-75 bg-kutala-blue rounded-xl">
-            <img src={AndersonPhoto} className="w-full rounded-t-xl" alt="Alberto" />
-
-            <div className="flex items-center justify-center flex-col py-2">
-              <p className="font-medium text-xl text-white font-google">Coge Paiva </p>
-              <p className="text-sm text-white tracking-wide font-sn flex justify-center items-center">Engenheiro Geográfico <IoEarth className="ml-2" /> </p>
-            </div>
-
-            <div className="rounded-b-xl flex items-center justify-center gap-5 bg-kutala-blue py-2">
-              <FaLinkedin className="text-xl text-white duration-400 cursor-pointer hover:text-gray-300" />
-              <SiGmail className="text-xl text-white duration-400 cursor-pointer hover:text-gray-300" />
-              <FaGithub className="text-xl text-white duration-400 cursor-pointer hover:text-gray-300" />
-            </div>
-
-          </motion.div>
 
         </div>
 
