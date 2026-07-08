@@ -2,7 +2,7 @@
 const bcrypt = require("bcrypt")
 module.exports =   {
   async up(queryInterface, Sequelize) {
-    const password = "cogeAnderson"
+    const password = "kutalaSitem"
     try {
       const senhaSegura = await bcrypt.hash(password, (10))
       await queryInterface.bulkInsert('perfil', [{
