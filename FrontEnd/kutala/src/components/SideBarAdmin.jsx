@@ -36,7 +36,7 @@ function SideBarAdmin({ isOpen }) {
         const confirmacao = window.confirm("Deseja terminar a sessão?");
         if (confirmacao) {
             logout()
-            navigate("/")
+            navigate("/login")
         }
     }
 
@@ -56,6 +56,7 @@ function SideBarAdmin({ isOpen }) {
                     </div>
 
                     <div className="space-y-4 cursor-pointer">
+                    
                         <div className="flex items-center gap-3">
                             <section>
                                 <RiHome9Line className=" flex justify-center text-blue-400 text-xl" />

@@ -118,7 +118,7 @@ function Listar() {
     return (
         <>
             <div className="flex">
-                <SideBarAdmin isOpen={sideBar}/>
+                <SideBarAdmin isOpen={sideBar} />
                 <div className="w-full h-screen bg-gray-50">
                     <div className="px-4 pt-4 flex justify-center flex-col space-y-10">
 
@@ -212,7 +212,7 @@ function Listar() {
                                                     <LuTriangleAlert className="bg-blue-600 rounded text-white hover:bg-blue-700 text-3xl px-2 py-1"
                                                         onClick={() => actualizarAlert(alerta.id, alerta.nivel_alerta)}
                                                     />
-
+    
 
                                                 </td>
                                             </tr>

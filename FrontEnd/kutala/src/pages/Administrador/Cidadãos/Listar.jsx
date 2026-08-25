@@ -132,6 +132,7 @@ function ListarCidadao() {
                                 </thead>
 
                                 <tbody>
+                                
                                     {cidFiltrados.map((cid) =>
                                         <tr className="hover:bg-gray-100" key={cid.id}>
                                             <td className="font-barlow text-sm md:text-md font-bold"> {cid.perfil.nome} </td>

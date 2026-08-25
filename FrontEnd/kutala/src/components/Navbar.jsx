@@ -18,10 +18,10 @@ export default function Navbar() {
                 </section>
 
                 <section className="hidden md:flex space-x-6">
-                    <a href="#inicio" className="hover:text-ouro cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Início</a>
-                    <a href="#objectivos" className="hover:text-ouro cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Objectivos</a>
-                    <a href="#sobre" className="hover:text-ouro cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Sobre o Sistema</a>
-                    <a href="#equipa" className="hover:text-ouro cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Equipa</a>
+                    <a href="#inicio" className="text-kutala-blue cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Início</a>
+                    <a href="#objectivos" className="text-kutala-blue cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Objectivos</a>
+                    <a href="#sobre" className="text-kutala-blue cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Sobre o Sistema</a>
+                    <a href="#equipa" className="text-kutala-blue cursor-pointer duration-140 ease-in font-manrope font-bold hover:scale-104 text-sm">Equipa</a>
 
 
                 </section>

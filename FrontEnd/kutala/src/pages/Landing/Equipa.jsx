@@ -7,7 +7,6 @@ import { FaGithub } from "react-icons/fa";
 import { IoCodeSlash } from "react-icons/io5";
 import { RiTeamFill } from "react-icons/ri";
 import { IoEarth } from "react-icons/io5";
-import banner from "../../assets/teste.png"
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 
@@ -33,15 +32,11 @@ export default function equipa() {
   }
   return (
     <>
-      <div id="equipa" className="w-full min-h-100 bg-white/50 flex justify-center items-center flex-col gap-4">
+      <div id="equipa" className="w-full min-h-screen bg-white flex justify-center items-center gap-4">
 
-        <motion.div className="w-full flex items-center justify-start px-5 py-2">
-          <p className="bg-verde text-white rounded-full py-1 p-3 font-barlow flex items-center justify-center">Equipa <RiTeamFill className="ml-2" /></p>
-        </motion.div>
+        
 
-        <div style={{
-          backgroundImage: `url(${banner})`
-        }} className="bg-cover w-full py-6  min-h-40 flex flex-col md:flex-row items-center justify-center gap-10"
+        <div className=" w-full p-10  min-h-40 flex flex-col md:flex-row items-center justify-center gap-10"
           ref={ref}>
 
           <motion.div animate={secondImg} className="w-75 bg-kutala-blue rounded-xl">

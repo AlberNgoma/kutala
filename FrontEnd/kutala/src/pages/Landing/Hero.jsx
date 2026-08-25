@@ -12,10 +12,10 @@ import inundacao6 from "../../assets/images.jpg";
 import { Link } from "react-router-dom"
 
 const imagem = [
-    inundacao2,
-    inundacao,
-    inundacao3,
     inundacao4,
+    inundacao3,
+    inundacao,
+    inundacao2,
     inundacao5,
     inundacao6
 ]
@@ -77,21 +77,21 @@ export default function Hero() {
 
 
 
-                <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/60 to-black z-10" />
-                <motion.div initial="hidden" animate="visible" variants={container} className="relative w-full top-3 min-h-130 z-20 flex items-center justify-center text-center flex-col gap-4 px-5">
+                <div className="absolute inset-0 bg-linear-to-b from-black/50 via-black/60 to-black z-10" />
+                <motion.div initial="hidden" animate="visible" variants={container} className="relative w-full top-3 h-screen z-20 flex items-center justify-center text-center flex-col gap-4 px-5">
 
                     <motion.div variants={item} className="w-full min-h-10 fixed top-6 px-6 flex items-center justify-center">
                         <Navbar />
                     </motion.div>
 
-                    <motion.div className="space-y-2" variants={item}>
-                        <h1 className="md:text-7xl text-5xl font-google text-white tracking-wider font-semibold">Bem vindo ao <span className="text-ouro">Kutala</span>.</h1>
-                        <p className="md:text-xl text-md font-outfit text-white">Sistema de controle de cheias e inundações</p>
+                    <motion.div className="space-y-2 text-gray-100" variants={item}>
+                        <h1 className="md:text-7xl text-5xl font-archivo font-semibold tracking-wider">Bem vindo a <span className="te">Kutala</span>.</h1>
+                        <p className="font-outfit tracking-wider">Sistema de controle de cheias e inundações <br /> que une tecnologia e dados climáticos para salvar vidas e proteger infraestruturas</p>
                     </motion.div>
 
-                    <motion.div variants={item} className="w-full min-h-20 flex flex-col md:flex-row items-center justify-center gap-3">
-                        <a href="#objectivos"><button className="bg-ouro font-outfit hover:bg-transparent hover:border border-ouro text-white rounded-full  duration-500 ease-in-out h-12 w-40 cursor-pointer flex items-center justify-center">Saber Mais <HiQuestionMarkCircle className="ml-2" /></button></a>
-                        <Link to="/login"><button className="bg-ouro font-outfit hover:bg-transparent hover:border border-ouro text-white rounded-full  duration-500 ease-in-out h-12 w-40 cursor-pointer flex items-center justify-center">Entrar <FaCircleArrowRight className="ml-2" /></button></Link>
+                    <motion.div variants={item} className="w-full min-h-20 flex flex-col md:flex-row items-center justify-center gap-4">
+                        <a href="#objectivos"><button className="bg-kutala-blue font-outfit hover:bg-gray-100 hover:text-kutala-blue   text-gray-100 w-40 duration-400 ease-in-out p-3 rounded-full  cursor-pointer flex items-center justify-center">Saber Mais <HiQuestionMarkCircle className="ml-2" /></button></a>
+                        <Link to="/login"><button className="bg-kutala-blue font-outfit hover:bg-gray-100 hover:text-kutala-blue   text-gray-100 w-40 duration-400 ease-in-out p-3 rounded-full  cursor-pointer flex items-center justify-center">Entrar <FaCircleArrowRight className="ml-2" /></button></Link>
 
                     </motion.div>
 
