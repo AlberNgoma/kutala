@@ -8,7 +8,7 @@ import getBairro from "../../services/Bairro/BairrosService"
 import { RxEyeOpen } from "react-icons/rx";
 import { IoEyeOffOutline } from "react-icons/io5";
 import { ClipLoader } from "react-spinners";
-
+import { motion } from "framer-motion"
 
 
 
@@ -121,7 +121,9 @@ function Cadastro() {
                 backgroundImage: `linear-gradient(rgba(0,0,0,0.53),rgb(0,0,0)), url(${background})`
 
             }} className="min-h-screen flex items-center justify-center bg-cover">
-                <div className="bg-gray-50 w-full max-w-3xl flex-col md:flex-row rounded flex justify-center items-center mx-4">
+                <motion.div initial={{opacity : 0, x:-190}} animate={{opacity : 1, x : 0, transition : {duration :1}}}
+                 className="bg-gray-50 w-full max-w-3xl flex-col md:flex-row rounded flex justify-center items-center mx-4">
+
                     <div className="hidden md:flex w-full md:w-1/2 p-6 justify-center items-center">
                         <img className="w-full" alt="image banner" src={banner}></img>
                     </div>
@@ -285,7 +287,7 @@ function Cadastro() {
                     </div>
 
 
-                </div>
+                </motion.div>
 
 
 

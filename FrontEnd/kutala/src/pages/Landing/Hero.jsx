@@ -85,11 +85,11 @@ export default function Hero() {
                     </motion.div>
 
                     <motion.div className="space-y-2 text-gray-100" variants={item}>
-                        <h1 className="md:text-7xl text-5xl font-archivo font-semibold tracking-wider">Bem vindo a <span className="te">Kutala</span>.</h1>
-                        <p className="font-outfit tracking-wider">Sistema de controle de cheias e inundações <br /> que une tecnologia e dados climáticos para salvar vidas e proteger infraestruturas</p>
+                        <h1 className="md:text-7xl text-5xl font-archivo font-semibold tracking-wider">Bem vindo ao <span className="te">Kutala</span>.</h1>
+                        <p className="font-outfit tracking-wider">Sistema de controle de cheias e inundações <br /> que une a  tecnologia e dados climáticos para salvar vidas e proteger infraestruturas</p>
                     </motion.div>
 
-                    <motion.div variants={item} className="w-full min-h-20 flex flex-col md:flex-row items-center justify-center gap-4">
+                    <motion.div variants={item} className="w-full min-h-20 flex flex-col-reverse md:flex-row items-center justify-center gap-4">
                         <a href="#objectivos"><button className="bg-kutala-blue font-outfit hover:bg-gray-100 hover:text-kutala-blue   text-gray-100 w-40 duration-400 ease-in-out p-3 rounded-full  cursor-pointer flex items-center justify-center">Saber Mais <HiQuestionMarkCircle className="ml-2" /></button></a>
                         <Link to="/login"><button className="bg-kutala-blue font-outfit hover:bg-gray-100 hover:text-kutala-blue   text-gray-100 w-40 duration-400 ease-in-out p-3 rounded-full  cursor-pointer flex items-center justify-center">Entrar <FaCircleArrowRight className="ml-2" /></button></Link>
 

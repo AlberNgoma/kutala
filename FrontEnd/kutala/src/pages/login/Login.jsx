@@ -8,6 +8,7 @@ import { ClipLoader } from "react-spinners";
 import { MdRemoveRedEye } from "react-icons/md";
 import { IoMdEyeOff } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion"
 
 function Login() {
     const navigate = useNavigate();
@@ -91,7 +92,8 @@ function Login() {
 
             }} className="min-h-screen flex items-center justify-center bg-cover">
 
-                <div className="bg-gray-50 w-full max-w-3xl rounded flex flex-col md:flex-row justify-center items-center mx-4">
+                <motion.div initial={{opacity : 0, x:190}} animate={{opacity : 1, x : 0, transition : {duration :1}}}
+                    className="bg-gray-50 w-full max-w-3xl rounded flex flex-col md:flex-row justify-center items-center mx-4">
 
                     <div className="hidden md:flex w-full md:w-1/2 p-6 justify-center items-center">
                         <img className="w-full" alt="image banner" src={banner}></img>
@@ -171,8 +173,8 @@ function Login() {
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
+                </motion.div>
+            </div >
 
 
 
