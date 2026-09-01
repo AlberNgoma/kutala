@@ -25,7 +25,7 @@ function NavbarCidadao() {
         const confirmacao = window.confirm("Deseja termir a sessão")
         if (confirmacao) {
             logout()
-            navigate("/")
+            navigate("/login")
         }
     }
 

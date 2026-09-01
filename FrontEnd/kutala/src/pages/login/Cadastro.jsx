@@ -63,7 +63,7 @@ function Cadastro() {
             await cadastrar(dados);
 
             alert.success(`${nome} cadastrado com sucesso!`);
-            navigate("/")
+            navigate("/login")
 
 
         } catch (error) {

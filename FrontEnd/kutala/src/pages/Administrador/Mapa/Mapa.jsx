@@ -6,21 +6,22 @@ import bairroService from "../../../services/Bairro/BairrosService";
 import climaService from "../../../services/Clima/ClimaService";
 import listarComentarios from "../../../services/Comentario/ComentariosService";
 import SideBarAdmin from "../../../components/SideBarAdmin";
-import MapLegend from "./MapLegend";
-import { GiHamburgerMenu } from "react-icons/gi";
+import foto from "../../../assets/kutala.png"
 
 
 import { FaLocationDot } from "react-icons/fa6";
-import { IoIosCloseCircle } from "react-icons/io";
-import { BsChatTextFill } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
 import { IoIosWater } from "react-icons/io";
 import { FaTemperatureHigh } from "react-icons/fa";
 import { FaPercent } from "react-icons/fa";
 import { AiFillMessage } from "react-icons/ai";
-import { BsHousesFill } from "react-icons/bs";
 import { GoAlertFill } from "react-icons/go";
 import { ClipLoader } from "react-spinners";
+import alert from "../../../Alerts"
+import Modal from "../../../components/Modal";
+import { AnimatePresence } from "framer-motion";
+import { LuMessageCircleWarning } from "react-icons/lu";
+
 
 import { useState, useEffect } from "react";
 
@@ -44,7 +45,7 @@ function Mapa() {
     const [bairroSelecionado, setBairroSelecionado] = useState(null);
     const [comentarios, setComentarios] = useState([]);
     const [fotoAmpliada, setFotoAmpliada] = useState(null)
-    const [sideBar, setSideBar] = useState(false);
+
 
     useEffect(() => {
         async function getBairros() {
@@ -105,7 +106,7 @@ function Mapa() {
             setSelectedBounds(bounds);
             getClima(bairroEncontrado.id);
         } else {
-            alert("Bairro não encontrado!");
+            alert.error("Bairro não encontrado!");
         }
     };
 
@@ -124,216 +125,198 @@ function Mapa() {
 
     }
 
-    function abrirSidebar() {
-        setSideBar(!sideBar);
-    }
+
 
 
 
     return (
-        <div className="flex">
-            <SideBarAdmin isOpen={sideBar} />
+        <>
+            <div className="flex">
+                <SideBarAdmin />
 
-            <div className="relative w-full h-screen">
+                <div className="flex-1 w-full h-screen relative">
 
-                <div className="p-4 md:p-0 absolute z-1000">
-                    <GiHamburgerMenu onClick={() => abrirSidebar()} className="text-xl  md:hidden relative cursor-pointer hover:scale-120 transition-all" />
-                    {sideBar && (
-                        <div
-                            className="fixed inset-0 bg-black/50 z-40 md:hidden"
-                            onClick={() => setSideBar(false)}
+                    <MapContainer
+                        center={[-8.814848815023304, 13.229510556084374]}
+                        zoom={15}
+                        style={{ height: "100%", width: "100%" }}
+                        zoomControl={false}
+
+                    >
+
+                        <TileLayer
+                            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                            attribution="&copy;KUTALA"
                         />
-                    )}
-                </div>
 
-                <div className="absolute z-1000 px-4 h-9 md:w-1/2 w-full top-1/5 md:right-1/4 flex items-center justify-center">
-                    <input
-                        type="text"
-                        placeholder="Pesquise por Bairros..."
-                        className="w-full bg-white py-3 px-5 rounded-full outline-none focus:bg-gray-100"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                    />
-                    <FaSearch
-                        onClick={handleSearch}
-                        className="absolute right-9 top-3 text-gray-400 cursor-pointer hover:text-blue-600"
-                    />
-                </div>
+                        <ZoomControl position="topright" />
 
-                <MapContainer
-                    center={[-8.814848815023304, 13.229510556084374]}
-                    zoom={15}
-                    style={{ height: "100%", width: "100%" }}
-                    zoomControl={false}
+                        <FocusBairro bounds={selectedBounds} />
 
-                >
-
-                    <TileLayer
-                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                        attribution="&copy;KUTALA"
-                    />
-
-                    <ZoomControl position="topright" />
+                        {bairros.map((bairro) => {
 
 
-                    <FocusBairro bounds={selectedBounds} />
+                            return (
+                                <Polygon
+                                    key={bairro.id}
+                                    positions={bairro.coordenadasFormatadas}
+                                    pathOptions={{
+                                        color: "white",
+                                        fillColor: getCorRisco(bairro.riscos?.[0]?.nivel),
+                                        fillOpacity: 0.6,
+                                        weight: 2
+                                    }}
+                                    eventHandlers={{
+                                        click: () => getClima(bairro.id)
+                                    }}
+                                >
+                                    <Popup>
+                                        <p className="flex items-center justify-center text-center gap-2">
+                                            <FaLocationDot className="text-md text-red-600" />{bairro.nome}
+                                        </p>
 
-                    {bairros.map((bairro) => {
-                        
-
-
-                        return (
-                            <Polygon
-                                key={bairro.id}
-                                positions={bairro.coordenadasFormatadas}
-                                pathOptions={{
-                                    color: "white",
-                                    fillColor: getCorRisco(bairro.riscos?.[0]?.nivel),
-                                    fillOpacity: 0.6,
-                                    weight: 2
-                                }}
-                                eventHandlers={{
-                                    click: () => getClima(bairro.id)
-                                }}
-                            >
-                                <Popup>
-                                    <p className="flex font-outfit font-medium">
-                                        <BsHousesFill className="mr-2 text-black" /> Bairro {bairro.nome}
-                                    </p>
-
-                                    {clima ? (
-                                        <div className="space-y-1">
-                                            <p className="flex font-outfit font-medium"><IoIosWater className="mr-2 text-blue-600" /> Chuva: {clima.chuva} mm</p>
-                                            <p className="flex font-outfit font-medium"><FaTemperatureHigh className="mr-2 text-orange-600" /> Temp: {clima.temperatura} ºC</p>
-                                            <p className="flex font-outfit font-medium"><FaPercent className="mr-2 text-red-400" /> Humidade: {clima.humidade} %</p>
-                                            <p className="flex font-outfit font-medium"><AiFillMessage className="mr-2 text-green-500" /> Obs: {clima.descricao_clima}</p>
-                                        </div>
-                                    ) : (
-                                        <div className="flex justify-center p-1">
-                                            <ClipLoader size={20} color="#3b82f6" />
-                                        </div>
-                                    )}
-                                    <button className="w-full mt-3 flex items-center justify-center bg-red-500 px-5 py-1 rounded text-white hover:bg-red-600  font-google"
-                                        onClick={() => abrirModal(bairro)}>
-                                        Visualizar Alertas <GoAlertFill className="ml-1" />
-                                    </button>
-                                </Popup>
-
-                                <Tooltip sticky>
-                                    <p className="font-outfit font-bold">{bairro.nome}</p>
-                                </Tooltip>
-                            </Polygon>
-                        );
-                    })}
-
-                    <MapLegend />
-                </MapContainer>
-            </div>
-            {modal && (
-                <>
-                    <div className=" bg-black/50 z-1000 p-6 absolute w-full min-h-screen flex items-center justify-center">
-                        <div className="bg-white w-100 h-120 rounded-lg">
-
-                            <div className="w-full h-10 flex justify-end items-center px-3">
-                                <IoIosCloseCircle className="text-2xl cursor-pointer hover:text-red-600"
-                                    onClick={() => setModal(false)}
-                                />
-                            </div>
-
-                            <div className="flex w-full items-center flex-col p-3">
-                                <h3 className="flex items-center justify-center  text-lg"><FaLocationDot className="mx-2 text-red-600" /> {bairroSelecionado.nome}  </h3>
-
-                            </div>
-
-
-                            <div className="w-full h-50 px-3">
-                                <div className="flex items-center p-3">
-
-                                    <span className="flex-1 border-t border-gray-300"></span>
-                                    <span className="px-3 text-gray-500 flex items-center justify-center">Comentários <BsChatTextFill className="ml-2 text-green-500" /></span>
-                                    <span className="flex-1 border-t border-gray-300"></span>
-                                </div>
-
-                                <div className="w-full h-90  overflow-y-auto">
-
-                                    <div className="w-full flex items-center flex-col space-y-3">
-
-                                        {comentarios.map((comentario) => (
-                                            <div key={comentario.id} className="w-full h-40 py-3 bg-gray-200 p-2 rounded-lg border-l-4 border-blue-500">
-
-                                                <div className="w-full h-10 flex items-center justify-between pb-3 px-2 border-b border-gray-300">
-
-                                                    <div className="flex items-center justify-center space-x-2">
-
-                                                        <section>
-                                                            <p className="font-bold text-white bg-blue-600 w-10 h-10 rounded-full flex justify-center items-center p-3">
-                                                                {comentario.perfil.nome.charAt(0).toUpperCase()}
-                                                            </p>
-                                                        </section>
-
-                                                        <section>
-                                                            <p className="font-google font-medium"> {comentario.perfil.nome} </p>
-                                                        </section>
-                                                    </div>
-
-                                                    <div>
-                                                        <p className="font-google text-sm text-gray-700"> {new Date(comentario.createdAt).toLocaleDateString()} </p>
-                                                    </div>
-
-                                                </div>
-
-                                                <div className="w-full h-28">
-                                                    <div className="w-full px-4 py-2">
-                                                        <p className="font-barlow">{comentario.texto}</p>
-
-                                                        {comentario.foto && (
-                                                            <img
-                                                                src={`http://localhost:5000/${comentario.foto}`}
-                                                                alt="foto do comentário"
-                                                                className="w-17 h-14 object-cover rounded-lg shadow-md mt-2"
-                                                                onClick={() => setFotoAmpliada(`http://localhost:5000/${comentario.foto}`)}
-                                                            />
-                                                        )}
-                                                        {fotoAmpliada && (
-                                                            <div
-                                                                className="fixed inset-0 bg-black/40 z-3000 flex justify-center items-center"
-                                                                onClick={() => setFotoAmpliada(null)} // clica fora para fechar
-                                                            >
-                                                                <img
-                                                                    src={fotoAmpliada}
-                                                                    alt="foto ampliada"
-                                                                    className="max-w-[90%] max-h-[90%] object-contain rounded-lg shadow-2xl"
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </div>
-
-
-
-
-                                                </div>
-
+                                        {clima ? (
+                                            <div className="space-y-1">
+                                                <p className="flex font-outfit font-medium"><IoIosWater className="mr-2 text-blue-600" /> Chuva: {clima.chuva} mm</p>
+                                                <p className="flex font-outfit font-medium"><FaTemperatureHigh className="mr-2 text-orange-600" /> Temp: {clima.temperatura} ºC</p>
+                                                <p className="flex font-outfit font-medium"><FaPercent className="mr-2 text-red-400" /> Humidade: {clima.humidade} %</p>
+                                                <p className="flex font-outfit font-medium"><AiFillMessage className="mr-2 text-green-500" /> Obs: {clima.descricao_clima}</p>
                                             </div>
-                                        ))}
+                                        ) : (
+                                            <div className="flex justify-center p-1">
+                                                <ClipLoader size={20} className="text-kutala-blue" />
+                                            </div>
+                                        )}
+                                        <button className="w-full mt-3 cursor-pointer flex items-center justify-center bg-red-500 px-5 py-1 rounded text-white hover:bg-red-600  font-google"
+                                            onClick={() => abrirModal(bairro)}>
+                                            Visualizar Alertas <GoAlertFill className="ml-1" />
+                                        </button>
+                                    </Popup>
+
+                                    <Tooltip>
+                                        <p className="font-outfit font-bold">{bairro.nome}</p>
+                                    </Tooltip>
+
+                                </Polygon>
 
 
+                            );
 
 
+                        })}
+
+                    </MapContainer>
+
+                    <div className="w-full mt-24 flex items-center justify-center px-7 absolute top-0 z-600">
+                        <input
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+
+                            type="text"
+                            className="bg-white border-white outline-none rounded-tl-full rounded-bl-full w-130 px-7 py-2"
+                            placeholder="Pesquisar..."
+                        />
+                        <button className="p-3 cursor-pointer w-15 text-white  bg-kutala-blue  flex items-center justify-center rounded-tr-full rounded-br-full">
+                            <FaSearch onClick={handleSearch} />
+                        </button>
+                    </div>
+
+                    <div className="flex flex-col items-center justify-center gap-4 fixed z-600 bg-gray-50 px-8 py-2 rounded-md bottom-5 right-0 font-outfit ">
+                        <h1>Legenda</h1>
+
+                        <div className="space-y-3">
+
+                            <div className="flex items-center gap-2">
+                                <div className="p-4 bg-green-500 rounded-full"></div>
+                                <div>Seguro</div>
+                            </div>
 
 
-                                    </div>
+                            <div className="flex items-center gap-2">
+                                <div className="p-4 bg-yellow-300 rounded-full"></div>
+                                <div>Moderado</div>
+                            </div>
 
-                                </div>
+
+                            <div className="flex items-center gap-2">
+                                <div className="p-4 bg-red-500 rounded-full"></div>
+                                <div>Risco</div>
                             </div>
 
                         </div>
 
                     </div>
 
-                </>
-            )}
-        </div>
+
+
+                </div>
+                <AnimatePresence>
+                    {modal && (
+                        <Modal close={() => setModal(false)}>
+
+
+                            <div className="flex items-center px-5 font-outfit">
+                                <div className="flex-1 border-t border-kutala-blue/50"></div>
+                                <div className="px-3 flex items-center gap-2 text-kutala-blue tracking-wider">
+                                    <span> Comentários</span>
+                                    <LuMessageCircleWarning />
+                                </div>
+                                <div className="flex-1 border-t border-kutala-blue/50"></div>
+                            </div>
+
+                            <div className="w-full h-85 flex flex-col gap-2 items-stretch overflow-y-auto overflow-x-auto p-5">
+
+                                <div className="p-5 bg-white border-l-4 border-kutala-blue rounded-tr-xl rounded-br-xl rounded-tl-md rounded-bl-md">
+
+                                    <div className="flex items-center justify-between">
+                                        <span className="flex items-center gap-2">
+                                            <p className="flex items-center justify-center text-sm p-3 bg-kutala-blue font-semibold text-white rounded-full">AN</p>
+                                            <p>Alberto Ngoma</p>
+                                        </span>
+
+                                        <span className="text-sm">
+                                            20/03/2020
+                                        </span>
+                                    </div>
+
+                                    <div className="w-full flex items-center">
+                                        <div className="w-1/1 mt-2 flex items-center justify-center">
+                                            <p className="text-sm ">Lorem ipsum dolor sit, amet consecteturiusto.</p>
+                                        </div>
+
+                                        <div className="w-1/2 flex items-center justify-center">
+                                            <img src={foto} className="w-20 rounded cursor-pointer" alt="" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+                        </Modal>
+                    )}
+                </AnimatePresence>
+
+            </div>
+
+
+
+
+
+
+        </>
     );
 }
 

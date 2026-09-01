@@ -391,7 +391,7 @@ function Mapa() {
                                                         )}
                                                         {fotoAmpliada && (
                                                             <div
-                                                                className="fixed inset-0 bg-black/40 z-[3000] flex justify-center items-center"
+                                                                className="fixed inset-0 bg-black/40 z-3000 flex justify-center items-center"
                                                                 onClick={() => setFotoAmpliada(null)} // clica fora para fechar
                                                             >
                                                                 <img

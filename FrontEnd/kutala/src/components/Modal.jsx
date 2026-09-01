@@ -5,7 +5,7 @@ export default function Modal({ children, close }) {
     return (
         <>
             <motion.div  exit={{opacity : 0}}
-             className='z-80 inset-0 bg-black/50 w-full fixed flex items-center justify-center p-8'>
+             className='z-5000 inset-0 bg-black/50 w-full fixed flex items-center justify-center p-8'>
 
 
                 <motion.div initial={{ opacity: 0, y: "100%" }} animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }} exit={{opacity : 0, y : "100%"}}
@@ -14,7 +14,7 @@ export default function Modal({ children, close }) {
                         <FaXmark onClick={close} className='text-red-600 text-xl cursor-pointer' />
                     </div>
 
-                    <div className='w-full h-90'>
+                    <div className='w-full h-94 '>
                         {children}
                     </div>
 

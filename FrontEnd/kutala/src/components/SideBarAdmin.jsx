@@ -46,7 +46,7 @@ function SideBarAdmin() {
 
     return (
         <>
-            <button onClick={() => setSideBar(!sidebar)} className="fixed  top-0 p-5 cursor-pointer md:hidden z-60">
+            <button onClick={() => setSideBar(!sidebar)} className="fixed  top-0 p-6 cursor-pointer md:hidden z-2000">
                 {sidebar ? (
                     <motion.p animate={{ rotate: 360, transition: { duration: 0.5 } }}>
                         <FaXmark color="white" size={22} />
@@ -58,7 +58,7 @@ function SideBarAdmin() {
                 )}
             </button>
 
-            <div className={`${sidebar ? "translate-x-0" : "-translate-x-full"} bg-kutala-blue flex flex-col items-center  w-75 inset-y-0 md:translate-x-0 fixed md:relative duration-400 ease-in-out z-40`}>
+            <div className={`${sidebar ? "translate-x-0" : "-translate-x-full"} bg-kutala-blue flex flex-col items-center  w-75 inset-y-0 md:translate-x-0 fixed md:relative duration-400 ease-in-out z-1900`}>
 
                 <div className="text-white font-semibold font-outfit  p-3 md:mt-6 mt-7 flex flex-col gap-1 items-center justify-center">
                     <FaUserTie className="md:text-5xl text-4xl" />
@@ -106,13 +106,13 @@ function SideBarAdmin() {
             </div>
             <AnimatePresence>
                 {sidebar && (
-                    <div onClick={() => setSideBar(false)} className="inset-0 bg-black/30 fixed z-20"></div>
+                    <div onClick={() => setSideBar(false)} className="inset-0 bg-black/30 fixed z-1200"></div>
                 )}
 
                 {modal && (
 
                     <Modal close={() => setModal(false)}>
-                        <div className="flex flex-col items-center justify-center gap-5 mt-20 font-outfit">
+                        <div className="flex flex-col items-center justify-center gap-5 mt-20 font-outfit z-3000">
 
                             <LuLogOut className="text-5xl" />
 
