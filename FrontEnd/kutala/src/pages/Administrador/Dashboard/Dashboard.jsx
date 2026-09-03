@@ -139,7 +139,7 @@ function Dashboard() {
                 <SideBarAdmin />
 
                 <motion.div variants={container} initial="hidden" animate="visible"
-                    className="flex-1 w-full min-h-screen bg-gray-50 flex flex-col p-5 bg- gap-3">
+                    className="flex-1 w-full min-h-screen bg-gray-100 flex flex-col p-5 bg- gap-3">
 
                     <motion.div variants={item}
                         className="md:mt-0 mt-10 py-2 md:p-0 font-outfit">

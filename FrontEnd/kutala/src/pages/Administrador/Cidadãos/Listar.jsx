@@ -7,9 +7,13 @@ import buscarCidadao from "../../../services/Cidadao/CidadaoService";
 import deleteCid from "../../../services/Cidadao/ApagarCidService";
 import alert from "../../../Alerts";
 import Modal from "../../../components/Modal";
+import { FaFileDownload } from "react-icons/fa";
 import actualizarCid from "../../../services/Cidadao/ActualizarCidService";
 import buscarBairros from "../../../services/Bairro/BairrosService";
 import { ImSearch } from "react-icons/im";
+import { PDFViewer } from "@react-pdf/renderer";
+import UserPDF from "../../../Pdf/UserPDF";
+
 import { useEffect, useState } from "react";
 
 
@@ -22,6 +26,7 @@ function ListarCidadao() {
     const [pesquisar, setPesquisar] = useState("");
     const [modalDelete, setModalDelete] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
+    const [modalPrint, setModalPrint] = useState(false)
     const [userSelecionado, setUserSelecionado] = useState(null)
 
 
@@ -103,6 +108,11 @@ function ListarCidadao() {
 
     }
 
+    function openModalPrint(usuario) {
+        setModalPrint(true)
+        setUserSelecionado(usuario)
+    }
+
 
     async function handleSalvar(e) {
 
@@ -144,40 +154,58 @@ function ListarCidadao() {
 
 
 
+
+
     return (
         <>
             <div className="flex">
                 <SideBarAdmin />
-                <div className="flex-1 w-full h-screen bg-gray-50">
+                <div className="flex-1 w-full h-screen bg-gray-50 font-outfit">
                     <div className=" px-5 pt-4 flex justify-center flex-col space-y-10 ">
 
-                        <div className="mt-20 md:mt-10">
+                        <div className="md:mt-0 mt-10 py-2 md:p-0">
                             <h2 className="text-xl flex items-center font-outfit">Cidadãos Cadastrados </h2>
                             <p className="font-outfit text-lg"> Total : {totalCid} </p>
                         </div>
 
-                        <div className="w-full flex items-center justify-end">
-                            <input value={pesquisar} onChange={(e) => setPesquisar(e.target.value)}
-                                placeholder="Pesquisar..." type="search"
-                                className="border w-1/2 md:p-2 p-1 outline-none rounded-tl-full rounded-bl-full px-5 md:px-6  placeholder:text-kutala-blue bg-white placeholder:font-outfit" />
 
 
-                            <button className="bg-kutala-blue border border-kutala-blue text-white cursor-pointer px-4 py-3 rounded-tr-full rounded-br-full">
-                                <ImSearch />
-                            </button>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex md:w-1/2 w-full items-center">
+                                <input value={pesquisar} onChange={(e) => setPesquisar(e.target.value)}
+                                    placeholder="Pesquisar..." type="search"
+                                    className="border w-full py-1 px-5 md:py-2  outline-none rounded-tl-full rounded-bl-full  placeholder:text-kutala-blue bg-white placeholder:font-outfit" />
 
+
+                                <button className="bg-kutala-blue border border-kutala-blue text-white cursor-pointer md:px-4 md:py-3 py-2 px-3 rounded-tr-full rounded-br-full">
+                                    <ImSearch />
+                                </button>
+                            </div>
+
+                            <div className="flex md:w-1/2 w-full items-center text-sm">
+                                <button onClick={() => setModalPrint(true)} className="bg-kutala-blue duration-300 text-white rounded-full py-1 md:py-2 px-5 cursor-pointer flex items-center gap-2">
+                                    Salvar em PDF
+                                    <FaFileDownload />
+                                </button>
+                            </div>
                         </div>
+
+
+
+
+
+
 
                         <div className="w-full overflow-x-auto max-h-80 overflow-y-auto">
 
                             <table className="w-full text-left text-sm min-w-150 bg-white rounded-xl">
 
                                 <thead className="bg-kutala-blue border-none text-white top-0 sticky">
-                                    <tr className="">
-                                        <th className="px-6 py-3">CIDADÃO</th>
+                                    <tr >
+                                        <th className="px-6 py-3 rounded-tl-2xl">CIDADÃO</th>
                                         <th className="px-6 py-3">BAIRRO</th>
                                         <th className="px-6 py-3">Nº BI</th>
-                                        <th className="px-6 py-3">BOTÕES</th>
+                                        <th className="px-6 py-3 rounded-tr-2xl">BOTÕES</th>
                                     </tr>
                                 </thead>
 
@@ -209,13 +237,16 @@ function ListarCidadao() {
                                                 <td className="px-6 py-3"> {cid.n_bi} </td>
 
                                                 <td className="flex items-center px-6 py-3 gap-1">
-                                                    <button onClick={() => openModalEdit(cid)} className="bg-green-100 p-2 rounded cursor-pointer">
+                                                    <button onClick={() => openModalEdit(cid)} className="bg-green-100 p-2 rounded hover:bg-green-200 duration-300 cursor-pointer">
                                                         <TbEdit className="text-green-500" />
                                                     </button>
 
-                                                    <button onClick={() => openModalDelete(cid)} className="bg-red-100 p-2 rounded cursor-pointer">
+
+
+                                                    <button onClick={() => openModalDelete(cid)} className="bg-red-100 p-2 rounded hover:bg-red-200 duration-300 cursor-pointer">
                                                         <BsTrash3 className="text-red-500" />
                                                     </button>
+
                                                 </td>
 
                                             </tr>
@@ -229,6 +260,8 @@ function ListarCidadao() {
                                 </tbody>
 
                             </table>
+
+
                         </div>
 
 
@@ -273,90 +306,101 @@ function ListarCidadao() {
 
                     {modalEdit && (
                         <Modal close={() => setModalEdit(false)}>
-                            <div className="flex flex-col px-5 space-y-2 font-outfit">
-
-                                <form onSubmit={handleSalvar}>
-
-                                    <section className="flex flex-col gap-2">
-                                        <span>Nome :</span>
-
-                                        <input type="text"
-                                            name="nome"
-                                            onChange={(e) => setUserSelecionado({
-                                                ...userSelecionado, perfil: {
-                                                    ...userSelecionado.perfil, nome: e.target.value
-                                                }
-                                            })}
-                                            value={userSelecionado.perfil.nome}
-
-                                            className="w-full border p-2 rounded" />
-
-                                    </section>
-
-                                    <section className="flex flex-col gap-2">
-                                        <span>Email :</span>
-
-                                        <input type="text"
-                                            name="email"
-                                            onChange={(e) => setUserSelecionado({
-                                                ...userSelecionado, perfil: {
-                                                    ...userSelecionado.perfil, email: e.target.value
-                                                }
-                                            })}
-
-                                            value={userSelecionado.perfil.email}
-                                            className="w-full border p-2 rounded" />
-
-                                    </section>
-
-                                    <section className="flex flex-col gap-2">
-                                        <span>Bairro : </span>
-
-                                        <select className="w-full border p-2 rounded"
-                                            name="bairro_id"
-                                            onChange={(e) => setUserSelecionado({
-                                                ...userSelecionado, bairro_id: e.target.value
-                                            })}
-
-                                            value={userSelecionado.bairro_id}
 
 
+                            <form className="flex flex-col gap-3 font-outfit px-5" onSubmit={handleSalvar}>
+
+                                <section className="flex flex-col ">
+                                    <span>Nome :</span>
+
+                                    <input type="text"
+                                        name="nome"
+                                        onChange={(e) => setUserSelecionado({
+                                            ...userSelecionado, perfil: {
+                                                ...userSelecionado.perfil, nome: e.target.value
+                                            }
+                                        })}
+                                        value={userSelecionado.perfil.nome}
+
+                                        className="w-full border p-2 rounded" />
+
+                                </section>
+
+                                <section className="flex flex-col ">
+                                    <span>Email :</span>
+
+                                    <input type="text"
+                                        name="email"
+                                        onChange={(e) => setUserSelecionado({
+                                            ...userSelecionado, perfil: {
+                                                ...userSelecionado.perfil, email: e.target.value
+                                            }
+                                        })}
+
+                                        value={userSelecionado.perfil.email}
+                                        className="w-full border p-2 rounded" />
+
+                                </section>
+
+                                <section className="flex flex-col ">
+                                    <span>Bairro : </span>
+
+                                    <select className="w-full border p-2 rounded"
+                                        name="bairro_id"
+                                        onChange={(e) => setUserSelecionado({
+                                            ...userSelecionado, bairro_id: e.target.value
+                                        })}
+
+                                        value={userSelecionado.bairro_id}
 
 
 
-                                        >
-
-                                            <option value="">Selecione</option>
-                                            {bairro.map((b) => (
-                                                <option key={b.id} value={b.id}>
-                                                    {b.nome}
-                                                </option>
-                                            ))}
-
-                                        </select>
-
-                                    </section>
-
-                                    <section className="flex flex-col gap-2">
-                                        <span>Nº BI : </span>
-
-                                        <input type="text"
-                                            name="n_bi"
-                                            onChange={(e) => setUserSelecionado({
-                                                ...userSelecionado, n_bi: e.target.value
-                                            })}
-                                            value={userSelecionado.n_bi}
-                                            className="w-full border p-2 rounded" />
-
-                                    </section>
-
-                                    <section className="mt-5">
-                                        <button type="submit" className="bg-blue-500 text-white duration-400 hover:bg-blue-600 w-full p-2 rounded font-semibold cursor-pointer">Salvar</button>
-                                    </section>
-
-                                </form>
 
 
+                                    >
+
+                                        <option value="">Selecione</option>
+                                        {bairro.map((b) => (
+                                            <option key={b.id} value={b.id}>
+                                                {b.nome}
+                                            </option>
+                                        ))}
+
+                                    </select>
+
+                                </section>
+
+                                <section className="flex flex-col ">
+                                    <span>Nº BI : </span>
+
+                                    <input type="text"
+                                        name="n_bi"
+                                        onChange={(e) => setUserSelecionado({
+                                            ...userSelecionado, n_bi: e.target.value
+                                        })}
+                                        value={userSelecionado.n_bi}
+                                        className="w-full border p-2 rounded" />
+
+                                </section>
+
+                                <section className="mt-4">
+                                    <button type="submit" className="bg-blue-500 text-white duration-400 hover:bg-blue-600 w-full p-2 rounded font-semibold cursor-pointer">Salvar</button>
+                                </section>
+
+                            </form>
+
+
+
+
+                        </Modal>
+                    )}
+
+                    {modalPrint && (
+                        <Modal close={() => setModalPrint(false)}>
+                            <div className="w-full h-90">
+                                <PDFViewer width="100%" height="100%">
+                                    <UserPDF />
+                                </PDFViewer>
 
                             </div>
                         </Modal>
