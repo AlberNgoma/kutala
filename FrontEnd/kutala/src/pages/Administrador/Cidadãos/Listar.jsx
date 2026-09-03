@@ -1,38 +1,41 @@
 import SideBarAdmin from "../../../components/SideBarAdmin";
-import { FaUsers } from "react-icons/fa6";
 import { TbEdit } from "react-icons/tb";
 import { BsTrash3 } from "react-icons/bs";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { AnimatePresence } from "framer-motion";
 import totalCidadao from "../../../services/Cidadao/TotalCidService"
 import buscarCidadao from "../../../services/Cidadao/CidadaoService";
 import deleteCid from "../../../services/Cidadao/ApagarCidService";
 import alert from "../../../Alerts";
-
+import Modal from "../../../components/Modal";
+import actualizarCid from "../../../services/Cidadao/ActualizarCidService";
+import buscarBairros from "../../../services/Bairro/BairrosService";
+import { ImSearch } from "react-icons/im";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 
 
 function ListarCidadao() {
     const [cidadao, setCidadao] = useState([]);
-    const [totalCid, setTotalCid] = useState([])
+    const [bairro, setBairro] = useState([]);
+    const [totalCid, setTotalCid] = useState(0)
     const [pesquisar, setPesquisar] = useState("");
-    const [sideBar, setSideBar] = useState(false)
-    const navigate = useNavigate();
+    const [modalDelete, setModalDelete] = useState(false)
+    const [modalEdit, setModalEdit] = useState(false)
+    const [userSelecionado, setUserSelecionado] = useState(null)
+
+
 
     useEffect(() => {
         async function getCid() {
             try {
                 const resposta = await buscarCidadao();
                 setCidadao(resposta.data)
-                console.log(resposta.data)
             } catch (error) {
                 console.log("Erro ao ir buscar Cidadãos ", error)
             }
 
         }
-        getCid()
-
 
         async function totalCid() {
             try {
@@ -44,16 +47,30 @@ function ListarCidadao() {
             }
 
         }
+
+        async function getBairro() {
+            try {
+                const response = await buscarBairros();
+                setBairro(response.data)
+            } catch (error) {
+                console.error("Erro ao ir buscar bairros ", error)
+            }
+
+        }
+
+        getCid()
+        getBairro()
         totalCid()
     }, [])
 
     async function apagarCidadao(id) {
-        const confirmacao = window.confirm("Tem a certeza que quer eliminar?");
-        if (!confirmacao) return;
+
         try {
 
             await deleteCid(id)
             setCidadao(cidActual => cidActual.filter(u => u.id !== id));
+            setTotalCid(total => total - 1)
+            setModalDelete(false)
             alert.success("Usuário eleminado com sucesso!")
 
         } catch (error) {
@@ -75,89 +92,146 @@ function ListarCidadao() {
         )
     })
 
-    function abrirSidebar() {
-        setSideBar(!sideBar)
+    function openModalDelete(usuario) {
+        setModalDelete(true)
+        setUserSelecionado(usuario)
     }
+
+    function openModalEdit(usuario) {
+        setModalEdit(true)
+        setUserSelecionado(usuario)
+
+    }
+
+
+    async function handleSalvar(e) {
+
+        try {
+            e.preventDefault();
+            const idUser = userSelecionado.id;
+
+            const dadosActualizados = {
+                nome: userSelecionado.perfil.nome,
+                email: userSelecionado.perfil.email,
+                bairro_id: userSelecionado.bairro_id,
+                n_bi: userSelecionado.n_bi
+            }
+
+            if (dadosActualizados.n_bi.length !== 14) {
+                return alert.error("O BI deve ter exatamente 14 caracteres")
+            }
+
+            const padraoEmail = /@./
+
+            if (!padraoEmail.test(dadosActualizados.email)) {
+                return alert.error("O email deve conter @")
+            }
+
+            await actualizarCid(idUser, dadosActualizados)
+            const response = await buscarCidadao();
+            setCidadao(response.data)
+
+            alert.success(`${dadosActualizados.nome} atualizado`)
+            setModalEdit(false)
+            setUserSelecionado(null)
+
+        } catch (error) {
+            console.error("Erro ao atualizar:", error);
+            alert("Não foi possível salvar as alterações.");
+        }
+    }
+
+
+
 
     return (
         <>
             <div className="flex">
-                <SideBarAdmin isOpen={sideBar} />
-                <div className="w-full h-screen bg-gray-50">
-                    <div className=" px-4 pt-4 flex justify-center flex-col space-y-10 ">
+                <SideBarAdmin />
+                <div className="flex-1 w-full h-screen bg-gray-50">
+                    <div className=" px-5 pt-4 flex justify-center flex-col space-y-10 ">
 
-                        <div className="pt-2 md:p-0">
-                            <GiHamburgerMenu onClick={() => abrirSidebar()} className="text-xl md:hidden cursor-pointer hover:scale-120 transition-all" />
-                            {sideBar && (
-                                <div
-                                    className="fixed inset-0 bg-black/50 z-40 md:hidden"
-                                    onClick={() => setSideBar(false)}
-                                />
-                            )}
-                        </div>
-
-                        <div>
-                            <h2 className="text-2xl flex items-center font-google">Cidadãos Cadastrados <FaUsers className="mx-2 text-3xl" /></h2>
+                        <div className="mt-20 md:mt-10">
+                            <h2 className="text-xl flex items-center font-outfit">Cidadãos Cadastrados </h2>
                             <p className="font-outfit text-lg"> Total : {totalCid} </p>
                         </div>
 
-                        <div className="w-full flex items-center">
+                        <div className="w-full flex items-center justify-end">
+                            <input value={pesquisar} onChange={(e) => setPesquisar(e.target.value)}
+                                placeholder="Pesquisar..." type="search"
+                                className="border w-1/2 md:p-2 p-1 outline-none rounded-tl-full rounded-bl-full px-5 md:px-6  placeholder:text-kutala-blue bg-white placeholder:font-outfit" />
 
 
-                            <input type="search" placeholder="Pesquisar..."
-                                className="md:w-1/2 w-full px-3 py-2 focus:border-blue-900
-                                  focus: outline-none border  shadow-lg border-gray-400
-                                   rounded-lg cursor-pointer placeholder:font-barlow"
-                                value={pesquisar}
-                                onChange={(e) => setPesquisar(e.target.value)}>
-                            </input>
-
-
+                            <button className="bg-kutala-blue border border-kutala-blue text-white cursor-pointer px-4 py-3 rounded-tr-full rounded-br-full">
+                                <ImSearch />
+                            </button>
 
                         </div>
 
+                        <div className="w-full overflow-x-auto max-h-80 overflow-y-auto">
 
-                        <div className="w-full h-80 rounded-xl overflow-y-auto text-center">
+                            <table className="w-full text-left text-sm min-w-150 bg-white rounded-xl">
 
-                            <table className="w-full">
-                                <thead className="bg-gray-900 h-10 sticky top-0 text-gray-200">
-
-                                    <tr>
-                                        <td className="text-sm md:text-md font-google">Nome</td>
-                                        <td className="text-sm md:text-md font-google">Email</td>
-                                        <td className="text-sm md:text-md font-google">Nº BI</td>
-                                        <td className="text-sm md:text-md font-google">Bairro</td>
-                                        <td className="text-sm md:text-md font-google">Ações</td>
+                                <thead className="bg-kutala-blue border-none text-white top-0 sticky">
+                                    <tr className="">
+                                        <th className="px-6 py-3">CIDADÃO</th>
+                                        <th className="px-6 py-3">BAIRRO</th>
+                                        <th className="px-6 py-3">Nº BI</th>
+                                        <th className="px-6 py-3">BOTÕES</th>
                                     </tr>
                                 </thead>
 
+
                                 <tbody>
-                                
-                                    {cidFiltrados.map((cid) =>
-                                        <tr className="hover:bg-gray-100" key={cid.id}>
-                                            <td className="font-barlow text-sm md:text-md font-bold"> {cid.perfil.nome} </td>
-                                            <td className="font-barlow text-sm md:text-md "> {cid.perfil.email} </td>
-                                            <td className="font-barlow text-sm md:text-md "> {cid.n_bi} </td>
-                                            <td className="font-barlow text-sm md:text-md"> {cid.bairro.nome} </td>
 
-                                            <td className="flex justify-center space-x-1 py-1 cursor-pointer">
-                                                <TbEdit className="bg-green-600 rounded text-white hover:bg-green-700 text-3xl px-2 py-1"
-                                                    onClick={() => navigate(`/admin/editar-cidadao/${cid.id}`)}
-                                                />
+                                    {cidFiltrados.length > 0 ? (
+                                        cidFiltrados.map((cid) => (
+                                            <tr key={cid.id} className="duration-200 hover:bg-gray-100 cursor-pointer">
 
-                                                <BsTrash3 className="bg-red-600 rounded text-white hover:bg-red-700 text-3xl px-2 py-1"
-                                                    onClick={() => apagarCidadao(cid.id)}
-                                                />
+                                                <td className="px-6 py-3">
+                                                    <div className="flex items-center gap-2">
 
-                                            </td>
-                                        </tr>
+                                                        <div className="w-10 h-10 bg-kutala-blue text-white font-medium flex items-center justify-center rounded-full">
+                                                            <p> {cid.perfil.nome.toUpperCase().charAt()} </p>
+                                                        </div>
+
+
+                                                        <div className="flex flex-col space-y-0">
+                                                            <p className="my-0 leading-none"> {cid.perfil.nome}  </p>
+                                                            <p className="my-0 leading-none text-xs text-kutala-blue/70 mt-1"> {cid.perfil.email}  </p>
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+
+
+                                                <td className="px-6 py-3"> {cid.bairro.nome} </td>
+                                                <td className="px-6 py-3"> {cid.n_bi} </td>
+
+                                                <td className="flex items-center px-6 py-3 gap-1">
+                                                    <button onClick={() => openModalEdit(cid)} className="bg-green-100 p-2 rounded cursor-pointer">
+                                                        <TbEdit className="text-green-500" />
+                                                    </button>
+
+                                                    <button onClick={() => openModalDelete(cid)} className="bg-red-100 p-2 rounded cursor-pointer">
+                                                        <BsTrash3 className="text-red-500" />
+                                                    </button>
+                                                </td>
+
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <td colSpan="7" className="text-center pt-10 font-outfit text-red-500">Nenhum usuário encontrado</td>
                                     )}
 
 
-                                </tbody>
-                            </table>
 
+                                </tbody>
+
+                            </table>
                         </div>
+
+
 
                     </div>
 
@@ -166,6 +240,129 @@ function ListarCidadao() {
 
 
                 </div>
+
+                <AnimatePresence>
+                    {modalDelete && (
+                        <Modal close={() => setModalDelete(false)}>
+                            <div className="flex flex-col items-center justify-center gap-3 font-outfit">
+
+                                <section className="mt-20">
+                                    <BsTrash3 className="text-4xl text-red-500" />
+                                </section>
+
+
+                                <section className="flex flex-col justify-center items-center">
+                                    <p className="text-xl">Deseja eliminar  <span className="font-semibold">{userSelecionado.perfil.nome}</span>?</p>
+                                    <p className="text-sm">Esta ação não pode ser revertida</p>
+                                </section>
+
+
+                                <section className="flex items-center justify-center gap-2 text-gray-100 ">
+                                    <button onClick={() => apagarCidadao(userSelecionado.id)} className="w-20 p-2 cursor-pointer bg-blue-500 rounded duration-300 hover:bg-blue-600">
+                                        Sim
+                                    </button>
+
+                                    <button onClick={() => setModalDelete(false)} className="w-20 p-2 cursor-pointer bg-red-500 rounded duration-300 hover:bg-red-600">
+                                        Não
+                                    </button>
+                                </section>
+
+                            </div>
+                        </Modal>
+                    )}
+
+                    {modalEdit && (
+                        <Modal close={() => setModalEdit(false)}>
+                            <div className="flex flex-col px-5 space-y-2 font-outfit">
+
+                                <form onSubmit={handleSalvar}>
+
+                                    <section className="flex flex-col gap-2">
+                                        <span>Nome :</span>
+
+                                        <input type="text"
+                                            name="nome"
+                                            onChange={(e) => setUserSelecionado({
+                                                ...userSelecionado, perfil: {
+                                                    ...userSelecionado.perfil, nome: e.target.value
+                                                }
+                                            })}
+                                            value={userSelecionado.perfil.nome}
+
+                                            className="w-full border p-2 rounded" />
+
+                                    </section>
+
+                                    <section className="flex flex-col gap-2">
+                                        <span>Email :</span>
+
+                                        <input type="text"
+                                            name="email"
+                                            onChange={(e) => setUserSelecionado({
+                                                ...userSelecionado, perfil: {
+                                                    ...userSelecionado.perfil, email: e.target.value
+                                                }
+                                            })}
+
+                                            value={userSelecionado.perfil.email}
+                                            className="w-full border p-2 rounded" />
+
+                                    </section>
+
+                                    <section className="flex flex-col gap-2">
+                                        <span>Bairro : </span>
+
+                                        <select className="w-full border p-2 rounded"
+                                            name="bairro_id"
+                                            onChange={(e) => setUserSelecionado({
+                                                ...userSelecionado, bairro_id: e.target.value
+                                            })}
+
+                                            value={userSelecionado.bairro_id}
+
+
+
+
+
+                                        >
+
+                                            <option value="">Selecione</option>
+                                            {bairro.map((b) => (
+                                                <option key={b.id} value={b.id}>
+                                                    {b.nome}
+                                                </option>
+                                            ))}
+
+                                        </select>
+
+                                    </section>
+
+                                    <section className="flex flex-col gap-2">
+                                        <span>Nº BI : </span>
+
+                                        <input type="text"
+                                            name="n_bi"
+                                            onChange={(e) => setUserSelecionado({
+                                                ...userSelecionado, n_bi: e.target.value
+                                            })}
+                                            value={userSelecionado.n_bi}
+                                            className="w-full border p-2 rounded" />
+
+                                    </section>
+
+                                    <section className="mt-5">
+                                        <button type="submit" className="bg-blue-500 text-white duration-400 hover:bg-blue-600 w-full p-2 rounded font-semibold cursor-pointer">Salvar</button>
+                                    </section>
+
+                                </form>
+
+
+
+                            </div>
+                        </Modal>
+                    )}
+                </AnimatePresence>
+
 
             </div>
 

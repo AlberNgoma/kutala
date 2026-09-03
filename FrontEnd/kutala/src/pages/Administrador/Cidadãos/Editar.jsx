@@ -28,8 +28,7 @@ function Editar() {
 
                 const resposta = await getCidId(id);
                 const cid = resposta.data;
-                console.log(resposta.data)
-                console.log(cid)
+
                 setDadosForm({
                     nome: cid.perfil.nome,
                     email: cid.perfil.email,

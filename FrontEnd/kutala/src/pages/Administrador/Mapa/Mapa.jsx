@@ -10,7 +10,7 @@ import foto from "../../../assets/kutala.png"
 
 
 import { FaLocationDot } from "react-icons/fa6";
-import { FaSearch } from "react-icons/fa";
+import { FaSearchLocation } from "react-icons/fa";
 import { IoIosWater } from "react-icons/io";
 import { FaTemperatureHigh } from "react-icons/fa";
 import { FaPercent } from "react-icons/fa";
@@ -218,7 +218,7 @@ function Mapa() {
                             placeholder="Pesquisar..."
                         />
                         <button className="p-3 cursor-pointer w-15 text-white  bg-kutala-blue  flex items-center justify-center rounded-tr-full rounded-br-full">
-                            <FaSearch onClick={handleSearch} />
+                            <FaSearchLocation onClick={handleSearch} />
                         </button>
                     </div>
 

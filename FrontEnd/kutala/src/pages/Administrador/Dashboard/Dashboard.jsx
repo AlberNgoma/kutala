@@ -151,7 +151,7 @@ function Dashboard() {
                     <motion.div variants={item}
                         className="grid grid-cols-1 lg:grid-cols-4 sm:grid-cols-2 gap-4 font-outfit">
 
-                        <div className="bg-white rounded-md p-6  cursor-pointer  shadow-md transition-all">
+                        <div className="bg-white rounded-xl p-6  cursor-pointer  shadow-md transition-all">
                             <div className="flex justify-between items-center mb-4">
                                 <p className="font-outfit text-xl text-kutala-blue font-medium">Cidadãos</p>
                                 <FaUsers className="text-4xl text-blue-500 bg-blue-50 p-2 rounded" />
@@ -163,7 +163,7 @@ function Dashboard() {
                             )}
                         </div>
 
-                        <div className="bg-white rounded-md p-6  cursor-pointer  shadow-md transition-all">
+                        <div className="bg-white rounded-xl p-6  cursor-pointer  shadow-md transition-all">
                             <div className="flex justify-between items-center mb-4">
                                 <p className="font-outfit text-xl text-kutala-blue font-medium">Bairros</p>
                                 <LuMapPinHouse className="text-4xl text-green-500 p-2 bg-green-50 rounded" />
@@ -178,7 +178,7 @@ function Dashboard() {
                             )}
                         </div>
 
-                        <div className="bg-white rounded-md p-6  cursor-pointer  shadow-md transition-all">
+                        <div className="bg-white rounded-xl p-6  cursor-pointer  shadow-md transition-all">
                             <div className="flex justify-between items-center mb-4">
                                 <p className="font-outfit text-xl text-kutala-blue font-medium">Alertas</p>
                                 <RiAlertLine className="text-4xl text-yellow-500 bg-yellow-50 p-2 rounded" />
@@ -190,7 +190,7 @@ function Dashboard() {
                             )}
                         </div>
 
-                        <div className="bg-white rounded-md p-6  cursor-pointer  shadow-md transition-all">
+                        <div className="bg-white rounded-xl p-6  cursor-pointer  shadow-md transition-all">
                             <div className="flex justify-between items-center mb-4">
                                 <p className="font-outfit text-xl  text-kutala-blue font-medium">Riscos</p>
                                 <IoAlertCircleOutline className="text-4xl text-red-500 bg-red-50 p-2 rounded" />
