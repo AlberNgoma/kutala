@@ -11,8 +11,10 @@ import { FaFileDownload } from "react-icons/fa";
 import actualizarCid from "../../../services/Cidadao/ActualizarCidService";
 import buscarBairros from "../../../services/Bairro/BairrosService";
 import { ImSearch } from "react-icons/im";
-import { PDFViewer } from "@react-pdf/renderer";
-import UserPDF from "../../../Pdf/UserPDF";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import UserPDF from "../../../PDFs/UserPDF";
+
+
 
 import { useEffect, useState } from "react";
 
@@ -27,6 +29,7 @@ function ListarCidadao() {
     const [modalDelete, setModalDelete] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
     const [modalPrint, setModalPrint] = useState(false)
+    const [loading, setLoading] = useState(true);
     const [userSelecionado, setUserSelecionado] = useState(null)
 
 
@@ -111,6 +114,7 @@ function ListarCidadao() {
     function openModalPrint(usuario) {
         setModalPrint(true)
         setUserSelecionado(usuario)
+
     }
 
 
@@ -156,6 +160,8 @@ function ListarCidadao() {
 
 
 
+
+
     return (
         <>
             <div className="flex">
@@ -183,10 +189,15 @@ function ListarCidadao() {
                             </div>
 
                             <div className="flex md:w-1/2 w-full items-center text-sm">
-                                <button onClick={() => setModalPrint(true)} className="bg-kutala-blue duration-300 text-white rounded-full py-1 md:py-2 px-5 cursor-pointer flex items-center gap-2">
+
+                                <PDFDownloadLink
+                                    className="bg-kutala-blue duration-300 text-white rounded-full py-1 md:py-2 px-5 cursor-pointer flex items-center gap-2"
+                                    document={<UserPDF users={cidadao} />}
+                                    fileName="RELATÓRIO-DE-USUÁRIOS.pdf">
                                     Salvar em PDF
                                     <FaFileDownload />
-                                </button>
+                                </PDFDownloadLink>
+
                             </div>
                         </div>
 
@@ -252,7 +263,9 @@ function ListarCidadao() {
                                             </tr>
                                         ))
                                     ) : (
-                                        <td colSpan="7" className="text-center pt-10 font-outfit text-red-500">Nenhum usuário encontrado</td>
+                                        <tr>
+                                            <td colSpan="7" className="text-center pt-10 font-outfit text-red-500">Nenhum usuário encontrado</td>
+                                        </tr>
                                     )}
 
 
@@ -397,12 +410,8 @@ function ListarCidadao() {
 
                     {modalPrint && (
                         <Modal close={() => setModalPrint(false)}>
-                            <div className="w-full h-90">
-                                <PDFViewer width="100%" height="100%">
-                                    <UserPDF />
-                                </PDFViewer>
 
-                            </div>
+
                         </Modal>
                     )}
                 </AnimatePresence>
