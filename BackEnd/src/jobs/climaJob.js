@@ -17,6 +17,7 @@ function classificarNivel(chuva, humidade) {
     return null
 }
 
+
 function esperar(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -43,6 +44,10 @@ cron.schedule("*/10 * * * * *", async () => {
                     bairro_id: bairro.id
                 }
             })
+
+
+
+
 
 
             if (dadosExistente) {
@@ -95,12 +100,13 @@ cron.schedule("*/10 * * * * *", async () => {
 
                 if (!alertaExistente) {
                     await db.alerta.create({
-                        titulo: "Risco de inundação",
-                        mensagem: `Chuva: ${clima.chuva}mm | Humidade: ${clima.humidade}% `,
+
                         nivel_alerta: nivelSugerido,
+                        descricao: dadosExistente.descricao_clima,
                         status: 'PENDENTE',
                         bairro_id: bairro.id,
-                        municipio_id: bairro.municipio_id
+                        municipio_id: bairro.municipio_id,
+                        dados_clima_id: dadosExistente.id
                     });
                     console.log(` Alerta criado para o bairro ${bairro.nome}`);
                 }

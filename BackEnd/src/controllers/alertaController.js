@@ -105,6 +105,12 @@ module.exports = {
                     {
                         model: db.perfil, as: 'perfil',
                         attributes: ['nome']
+                    },
+
+
+                    {
+                        model: db.dados_clima, as: "dados_clima",
+                        attributes: ['descricao_clima', 'temperatura', 'chuva', 'humidade']
                     }
                 ]
             });

@@ -4,9 +4,10 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class dados_clima extends Model {
-    
+
     static associate(models) {
-      this.belongsTo(models.bairro, {foreignKey : 'bairro_id', as : 'bairro'});
+      this.belongsTo(models.bairro, { foreignKey: 'bairro_id', as: 'bairro' });
+      this.hasMany(models.alerta, { foreignKey: 'dados_clima_id', as: 'alerta' })
     }
   }
   dados_clima.init({
@@ -17,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'dados_clima',
-    freezeTableName : true
+    freezeTableName: true
   });
   return dados_clima;
 };
