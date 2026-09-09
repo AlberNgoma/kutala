@@ -1,20 +1,24 @@
 import { View, Text, Font } from "@react-pdf/renderer";
 import TemplatePDF from "../components/PDF.JSX"
 import { createTw } from "@react-pdf/tailwind";
+import OutfitRegular from "../Fonts/Outfit/Outfit-Regular.ttf"
+import OutfitSemiBold from "../Fonts/Outfit/Outfit-SemiBold.ttf"
+import PoppinsRegular from "../Fonts/Poppins/Poppins-Regular.ttf"
+import PoppinsSemiBold from "../Fonts/Poppins/Poppins-SemiBold.ttf"
 
 Font.register({
     family: "Outfit",
     fonts: [
-        { src: "/Fonts/Outfit/Outfit-Regular.ttf" },
-        { src: "/Fonts/Outfit/Outfit-SemiBold.ttf" }
+        { src: OutfitRegular },
+        { src: OutfitSemiBold }
     ]
 });
 
 Font.register({
     family: "Poppins",
     fonts: [
-        { src: "/Fonts/Poppins/Poppins-Regular.ttf" },
-        { src: "/Fonts/Poppins/Poppins-SemiBold.ttf" }
+        { src: PoppinsRegular },
+        { src: PoppinsSemiBold }
     ]
 });
 

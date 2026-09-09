@@ -11,8 +11,9 @@ import { FaFileDownload } from "react-icons/fa";
 import actualizarCid from "../../../services/Cidadao/ActualizarCidService";
 import buscarBairros from "../../../services/Bairro/BairrosService";
 import { ImSearch } from "react-icons/im";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import UserPDF from "../../../PDFs/UserPDF";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -28,8 +29,7 @@ function ListarCidadao() {
     const [pesquisar, setPesquisar] = useState("");
     const [modalDelete, setModalDelete] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
-    const [modalPrint, setModalPrint] = useState(false)
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [userSelecionado, setUserSelecionado] = useState(null)
 
 
@@ -111,11 +111,6 @@ function ListarCidadao() {
 
     }
 
-    function openModalPrint(usuario) {
-        setModalPrint(true)
-        setUserSelecionado(usuario)
-
-    }
 
 
     async function handleSalvar(e) {
@@ -155,6 +150,27 @@ function ListarCidadao() {
         }
     }
 
+    async function handleDownloadPDF() {
+
+        try {
+            setLoading(true)
+            const blob = await pdf(
+                <UserPDF users={cidadao} />
+            ).toBlob()
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "RELATÓRIO-DE-USUÁRIOS.pdf";
+            link.click();
+
+        } catch (error) {
+            console.log("Erro ao gerar PDF ", error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
 
 
 
@@ -190,13 +206,24 @@ function ListarCidadao() {
 
                             <div className="flex md:w-1/2 w-full items-center text-sm">
 
-                                <PDFDownloadLink
-                                    className="bg-kutala-blue duration-300 text-white rounded-full py-1 md:py-2 px-5 cursor-pointer flex items-center gap-2"
-                                    document={<UserPDF users={cidadao} />}
-                                    fileName="RELATÓRIO-DE-USUÁRIOS.pdf">
-                                    Salvar em PDF
-                                    <FaFileDownload />
-                                </PDFDownloadLink>
+                                <button
+                                    onClick={handleDownloadPDF}
+                                    disabled={loading}
+                                    className="bg-kutala-blue duration-300 text-white rounded-full w-35 p-2 flex items-center justify-center gap-2 cursor-pointer"
+                                >
+                                    {loading ? (
+                                        <div className="flex items-center justify-center">
+                                            <ClipLoader size={20} color="white" />
+                                        </div>
+                                    ) : (
+                                        <>
+                                            Salvar em PDF
+                                            <FaFileDownload />
+                                        </>
+                                    )}
+
+                                </button>
+
 
                             </div>
                         </div>
@@ -408,12 +435,7 @@ function ListarCidadao() {
                         </Modal>
                     )}
 
-                    {modalPrint && (
-                        <Modal close={() => setModalPrint(false)}>
 
-
-                        </Modal>
-                    )}
                 </AnimatePresence>
 
 

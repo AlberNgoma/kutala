@@ -15,5 +15,9 @@ module.exports = {
         } catch (error) {
             return res.status(500).json("Erro ao listar municipios ", error)
         }
+    },
+
+    async todosMunicipios(req, res){
+        
     }
 }

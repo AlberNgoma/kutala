@@ -3,32 +3,34 @@ import { ImSearch } from "react-icons/im";
 import { TbEdit } from "react-icons/tb";
 import { BsTrash3 } from "react-icons/bs";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import getAlerts from "../../../services/Alerta/TodosAlertasService"
 import deleteAlert from "../../../services/Alerta/ApagarAlerta"
 import emitirRisco from "../../../services/Alerta/EmitirRiscoService"
 import { LuTriangleAlert } from "react-icons/lu";
-import { BsPrinter } from "react-icons/bs";
 import alert from "../../../Alerts";
 import { ClipLoader } from "react-spinners";
+import Modal from "../../../components/Modal";
+import { AnimatePresence } from "framer-motion";
+import updateAlert from "../../../services/Alerta/ActualizarAlertService";
+import buscarBairros from "../../../services/Bairro/BairrosService";
 
 
 
 
 function corNivel(nivel) {
     switch (nivel) {
-        case "ALTO": return "bg-red-600";
-        case "MEDIO": return "bg-yellow-500";
-        case "BAIXO": return "bg-green-500";
-        default: return "bg-gray-400";
+        case "ALTO": return "text-red-600";
+        case "MEDIO": return "text-yellow-500";
+        case "BAIXO": return "text-green-500";
+        default: return "text-gray-400";
     }
 };
 
 
 function corStatus(status) {
     switch (status) {
-        case "PENDENTE": return "bg-yellow-500"
-        case "RESOLVIDO": return "bg-green-500"
+        case "PENDENTE": return "text-yellow-500"
+        case "RESOLVIDO": return "text-green-500"
     }
 };
 
@@ -36,9 +38,12 @@ function Listar() {
     const [alertas, setAlertas] = useState([]);
     const [pesquisar, setPesquisar] = useState("");
     const [risco, setRisco] = useState("");
-    const [sideBar, setSideBar] = useState(false);
+    const [modalEdit, setModalEdit] = useState(false)
+    const [modalDelete, setModalDelete] = useState(false)
+    const [modalAlert, setModalAlert] = useState(false);
+    const [alertaSelecionado, setAlertaSelecionado] = useState(null)
+    const [bairros, setBairros] = useState([])
     const [loading, setLoading] = useState(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         async function buscarAlertas() {
@@ -51,6 +56,13 @@ function Listar() {
                 console.log("Erro ao listar alertas ", error);
             }
         }
+
+        async function getBairros() {
+            const resposta = await buscarBairros()
+            setBairros(resposta.data)
+        }
+
+        getBairros()
         buscarAlertas()
     }, [])
 
@@ -109,9 +121,40 @@ function Listar() {
         }
     };
 
-    function abrirSideBar() {
-        setSideBar(!sideBar)
+    function openEdit(alerta) {
+        setModalEdit(true)
+        setAlertaSelecionado(alerta)
     }
+
+    async function novoAlerta(e) {
+        e.preventDefault();
+        try {
+            const alertId = alertaSelecionado.id;
+
+            const dadosAlerta = {
+                titulo: alertaSelecionado.titulo,
+                bairro_id: alertaSelecionado.bairro_id,
+                municipio_id: alertaSelecionado.municipio_id,
+                nivel_alerta: alertaSelecionado.nivel_alerta,
+                status: alertaSelecionado.status
+            };
+
+            await updateAlert(alertId, dadosAlerta)
+            const resposta = await getAlerts();
+            setAlertas(resposta.data)
+            setModalEdit(false)
+            alert.success("Alerta atualizado com sucesso");
+
+
+
+
+
+        } catch (error) {
+            console.log("Erro ao actualizar alerta ", error)
+        }
+    }
+
+
 
 
     return (
@@ -147,10 +190,9 @@ function Listar() {
 
                                     <tr>
                                         <th className="py-3 px-8 rounded-tl-2xl">Título</th>
-                                        
-                                        <th className="py-3 px-8">Nivel</th>
                                         <th className="py-3 px-8">Bairro</th>
                                         <th className="py-3 px-8">Município</th>
+                                        <th className="py-3 px-8">Nivel</th>
                                         <th className="py-3 px-8">Status</th>
                                         <th className="py-3 px-8 rounded-tr-2xl">Botões</th>
 
@@ -160,31 +202,34 @@ function Listar() {
 
                                 <tbody>
 
-                                    <tr>
-                                        <td className="py-3 px-8">Alerta</td>
-                                        <td className="py-3 px-8">Alerta</td>
-                                        <td className="py-3 px-8">Alerta</td>
-                                        <td className="py-3 px-8">Alerta</td>
-                                        <td className="py-3 px-8">Alerta</td>
-                                       
-
-                                        <td className="flex items-center px-6 py-3 gap-1">
-                                            <button className="bg-green-100 p-2 rounded hover:bg-green-200 duration-300 cursor-pointer">
-                                                <TbEdit className="text-green-500" />
-                                            </button>
-
-                                            <button className="bg-red-100 p-2 rounded hover:bg-red-200 duration-300 cursor-pointer">
-                                                <BsTrash3 className="text-red-500" />
-                                            </button>
-
-                                            <button className="bg-blue-100 p-2 rounded hover:bg-blue-200 duration-300 cursor-pointer">
-                                                <BsPrinter className="text-blue-500" />
-                                            </button>
+                                    {alertasFiltrados.map((alerta) => (
+                                        <tr className="hover:bg-gray-100 cursor-pointer duration-300 " key={alerta.id}>
+                                            <td className="py-3 px-8 font-semibold"> {alerta.titulo} </td>
+                                            <td className="py-3 px-8"> {alerta.bairro.nome} </td>
+                                            <td className="py-3 px-8"> {alerta.municipio.nome} </td>
+                                            <td className={`${corNivel(alerta.nivel_alerta)} py-3 px-8 font-semibold`}> {alerta.nivel_alerta} </td>
+                                            <td className={`${corStatus(alerta.status)} py-3 px-8 font-semibold`}> {alerta.status} </td>
 
 
-                                        </td>
+                                            <td className="flex items-center px-6 py-3 gap-1">
+                                                <button onClick={() => openEdit(alerta)} className="bg-green-100 p-2 rounded hover:bg-green-200 duration-300 cursor-pointer">
+                                                    <TbEdit className="text-green-500" />
+                                                </button>
 
-                                    </tr>
+                                                <button onClick={() => setModalDelete(true)} className="bg-red-100 p-2 rounded hover:bg-red-200 duration-300 cursor-pointer">
+                                                    <BsTrash3 className="text-red-500" />
+                                                </button>
+
+                                                <button onClick={() => setModalAlert(true)} className="bg-blue-100 p-2 rounded hover:bg-blue-200 duration-300 cursor-pointer">
+                                                    <LuTriangleAlert className="text-blue-500" />
+                                                </button>
+
+
+                                            </td>
+
+                                        </tr>
+                                    ))}
+
                                 </tbody>
                             </table>
 
@@ -203,6 +248,43 @@ function Listar() {
                     </div>
                 )}
             </div>
+
+            <AnimatePresence>
+
+                {modalEdit && (
+                    <Modal close={() => setModalEdit(false)}>
+
+                        
+
+                    </Modal>
+                )}
+
+
+
+
+
+                {modalDelete && (
+                    <Modal close={() => setModalDelete(false)}>
+                        <p>It´s modal Delete</p>
+                    </Modal>
+                )}
+
+                {modalDelete && (
+                    <Modal close={() => setModalDelete(false)}>
+                        <p>It´s modal Delete</p>
+                    </Modal>
+                )}
+
+                {modalAlert && (
+                    <Modal close={() => setModalAlert(false)}>
+                        <p>It´s modal Alert</p>
+                    </Modal>
+                )}
+
+
+            </AnimatePresence>
+
+
         </>
     );
 }

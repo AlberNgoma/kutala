@@ -1,6 +1,12 @@
 import { Document, Page, View, Text, Image, Font } from "@react-pdf/renderer";
 import { createTw } from "@react-pdf/tailwind";
 import FormatedDate from "../utils/FormatedDate";
+import OutfitRegular from "../Fonts/Outfit/Outfit-Regular.ttf"
+import OutfitSemiBold from "../Fonts/Outfit/Outfit-SemiBold.ttf"
+import PoppinsRegular from "../Fonts/Poppins/Poppins-Regular.ttf"
+import PoppinsSemiBold from "../Fonts/Poppins/Poppins-SemiBold.ttf"
+import logo from "../assets/imgKutala2.png"
+import banner from "../assets/bannerPDF.png"
 
 
 export default function templatePDF({ titleHeader, titleBody, total, children }) {
@@ -8,16 +14,16 @@ export default function templatePDF({ titleHeader, titleBody, total, children })
     Font.register({
         family: "Outfit",
         fonts: [
-            { src: "/Fonts/Outfit/Outfit-Regular.ttf" },
-            { src: "/Fonts/Outfit/Outfit-SemiBold.ttf" }
+            { src: OutfitRegular },
+            { src: OutfitSemiBold }
         ]
     });
 
     Font.register({
         family: "Poppins",
         fonts: [
-            { src: "/Fonts/Poppins/Poppins-Regular.ttf" },
-            { src: "/Fonts/Poppins/Poppins-SemiBold.ttf" }
+            { src: PoppinsRegular },
+            { src: PoppinsSemiBold }
         ]
     });
 
@@ -45,12 +51,12 @@ export default function templatePDF({ titleHeader, titleBody, total, children })
                         </View>
 
                         <View>
-                            <Image src="/imgKutala2.png" style={tw("w-20")} />
+                            {<Image src={logo} style={tw("w-20")} />}
                         </View>
                     </View>
 
                     <View style={tw("w-full h-2")}>
-                        <Image src="/bannerPDF.png" style={tw("w-full object-cover object-top h-full")} />
+                        {<Image src={banner} style={tw("w-full object-cover object-top h-full")} />}
                     </View>
                 </View>
 
@@ -73,10 +79,10 @@ export default function templatePDF({ titleHeader, titleBody, total, children })
                 {/* ROTADÉ*/}
                 <View fixed >
                     <View style={tw("w-full h-2")}>
-                        <Image
-                            src="/bannerPDF.png"
+                        { <Image
+                            src={banner}
                             style={tw("w-full object-cover object-top h-full")}
-                        />
+                        />}
                     </View>
 
                     <View style={tw("bg-primary py-4 px-10 flex flex-row items-center justify-between font-poppins text-gray-200 text-[10px] gap-3")}>
@@ -92,7 +98,7 @@ export default function templatePDF({ titleHeader, titleBody, total, children })
                                 Emitido à {FormatedDate()}
                             </Text>
 
-                            <Text  render={({ pageNumber, totalPages }) => `Página ${pageNumber} de ${totalPages}`} />
+                            <Text render={({ pageNumber, totalPages }) => `Página ${pageNumber} de ${totalPages}`} />
 
                         </View>
 

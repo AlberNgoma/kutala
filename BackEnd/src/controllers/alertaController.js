@@ -8,7 +8,7 @@ module.exports = {
 
     async criarAlerta(req, res) {
         const perfil_id = req.perfil.id;
-        const { titulo, mensagem, nivel_alerta, bairro_id } = req.body;
+        const { titulo, mensagem, nivel_alerta, bairro_id, municipio_id } = req.body;
 
         try {
             const novoAlerta = await db.alerta.create({
@@ -16,7 +16,8 @@ module.exports = {
                 mensagem: mensagem,
                 nivel_alerta: nivel_alerta,
                 perfil_id: perfil_id,
-                bairro_id: bairro_id
+                bairro_id: bairro_id,
+                municipio_id: municipio_id
             })
 
             return res.status(201).json(novoAlerta)
