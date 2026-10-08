@@ -13,7 +13,7 @@ function GraficoLinhas() {
       try {
         setLoading(true)
         const resposta = await DadosGrafico();
-        setAlertas(resposta.data);
+        setAlertas(resposta.data)
 
 
       } catch (error) {
@@ -24,6 +24,13 @@ function GraficoLinhas() {
     }
     getAlertas()
   }, []);
+
+
+  function formatarData(dataCerta){
+    if(!dataCerta) return "";
+    const [ano,mes, dia] = dataCerta.split("-");
+    return `${dia}/${mes}/${ano}`
+  }
 
 
 
@@ -40,11 +47,11 @@ function GraficoLinhas() {
       ) : (
         <ResponsiveContainer width="100%" height={193}>
           <LineChart data={alertas}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="data" />
+            <CartesianGrid strokeDasharray="3" />
+            <XAxis dataKey="data" tickFormatter={formatarData}/>
             <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="total_de_alertas" stroke="#ee0707" />
+            <Tooltip labelFormatter={formatarData} />
+            <Line type="monotone" dataKey="total_de_alertas" stroke="blue" activeDot={{ r: 6 }} strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
       )}

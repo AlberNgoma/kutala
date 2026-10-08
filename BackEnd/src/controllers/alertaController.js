@@ -2,6 +2,7 @@ const db = require("../models/index");
 const { sequelize } = require("../models");
 const { sendEmail } = require("../services/emailService");
 const gerarEmail = require("../templates/gerarEmail");
+const { NUMBER, Op } = require("sequelize");
 
 
 module.exports = {
@@ -95,7 +96,7 @@ module.exports = {
                 include: [
                     {
                         model: db.bairro, as: 'bairro',
-                        attributes: ['nome', 'nivel_risco']
+                        attributes: ['nome', 'vulnerabilidade']
                     },
                     {
                         model: db.municipio, as: 'municipio',
@@ -189,6 +190,29 @@ module.exports = {
         }
     },
 
+    async alertaPorMunicipio(req, res) {
+        try {
+            const getAlerta = await db.alerta.findAll({
+                attributes: [
+                    [sequelize.fn('COUNT', sequelize.col('alerta.id')), 'Total_de_Alertas']
+                ],
+
+                include: {
+                    model: db.municipio, as: 'municipio',
+                    attributes: ['nome']
+                },
+
+                group: ['municipio.id', 'municipio.nome']
+            })
+
+            return res.status(200).json(getAlerta);
+
+        } catch (error) {
+            console.log("Erro ao ir buscar alertas por municipios ", error);
+            return res.status(500).json({ error: "Erro ao ir buscar alerta por municipios" })
+        }
+    },
+
     async alertaPorBairro(req, res) {
         try {
             const getAlerta = await db.alerta.findAll({
@@ -252,6 +276,48 @@ module.exports = {
         } catch (error) {
             console.log("Erro ao ir buscar alerta por nivel ", error);
             return res.status(500).jso({ error: "Erro ao ir buscar alerta por nivel" })
+        }
+    },
+
+    async nivelAlerta(req, res) {
+
+        try {
+
+            const alerta = await db.alerta.count({
+                where: {
+                    nivel_alerta: "ALTO"
+                }
+            })
+            return res.status(200).json(alerta)
+
+        } catch (error) {
+            console.log("Erro ao calcular niveis de alert ", error)
+        }
+
+
+    },
+
+    async filtro(req, res) {
+
+        try {
+            const dia = NUMBER(req.query.dias).options;
+            const hoje = new Date();
+            const dataInicial = hoje.setDate(hoje.getDate() - dia);
+
+            const alerta = await db.alerta.count({
+                where: {
+                    createdAt: {
+                        [Op.lte]: dataInicial
+                    }
+                }
+            })
+
+            return res.status(200).json({msg : "Número de alertas : ", alerta})
+
+
+
+        } catch (error) {
+            console.log("Erro ao filtrar alertas ", error)
         }
     },
 

@@ -1,4 +1,5 @@
 const db = require("../models/index");
+const { Op, NUMBER } = require("sequelize");
 const bcrypt = require("bcrypt")
 
 
@@ -154,6 +155,31 @@ module.exports = {
         } catch (error) {
             console.log("Erro ao calcular o total  de cidadãos!", error);
             return res.status(500).json({ error: "Erro ao calcular o total  de cidadãos!" })
+        }
+    },
+
+    async filtrar(req, res) {
+
+        const dia = NUMBER(req.query.dias).options;
+        const hoje = new Date();
+        const dataInicial = hoje.setDate(hoje.getDate() - dia);
+
+
+        try {
+
+            const cidadao = await db.cidadao.count({
+                where: {
+                    createdAt: {
+                        [Op.lte]: dataInicial
+                    }
+                }
+            })
+
+            return res.status(200).json(cidadao)
+
+
+        } catch (error) {
+            console.log("Erro ao calcular cidadão cadastrado à 7 dias ", error.message)
         }
     }
 }

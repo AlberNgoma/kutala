@@ -12,31 +12,29 @@ module.exports = {
 
       nome: {
         type: Sequelize.STRING
-        
+
       },
 
-      latitude : {
-        type : Sequelize.STRING,
-        allowNull : false
+      latitude: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
 
-      longitude : {
-        type : Sequelize.STRING,
-        allowNull : false
-      }, 
+      longitude: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
 
-      poligono : {
-        type : Sequelize.JSON,
-        allowNull : false
+      poligono: {
+        type: Sequelize.JSON,
+        allowNull: false
       },
 
 
-      nivel_risco : {
-        type : Sequelize.ENUM('ALTO', 'BAIXO'),
-        allowNull : false,
-        defaultValue : 'BAIXO'
-      }, 
-
+      vulnerabilidade: {
+        type: Sequelize.ENUM('ALTA', 'BAIXA'),
+        allowNull: true
+      },
 
       municipio_id: {
         type: Sequelize.INTEGER,

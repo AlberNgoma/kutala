@@ -77,7 +77,7 @@ export default function Hero() {
 
 
 
-                <div className="absolute inset-0 bg-linear-to-b from-black/50 via-black/60 to-black z-10" />
+                <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/50 to-black z-10" />
                 <motion.div initial="hidden" animate="visible" variants={container} className="relative w-full top-3 h-screen z-20 flex items-center justify-center text-center flex-col gap-4 px-5">
 
                     <motion.div variants={item} className="w-full min-h-10 fixed top-6 px-6 flex items-center justify-center">
@@ -90,8 +90,8 @@ export default function Hero() {
                     </motion.div>
 
                     <motion.div variants={item} className="w-full min-h-20 flex flex-col-reverse md:flex-row items-center justify-center gap-4">
-                        <a href="#objectivos"><button className="bg-kutala-blue font-outfit hover:bg-gray-100 hover:text-kutala-blue   text-gray-100 w-40 duration-400 ease-in-out p-3 rounded-full  cursor-pointer flex items-center justify-center">Saber Mais <HiQuestionMarkCircle className="ml-2" /></button></a>
-                        <Link to="/login"><button className="bg-kutala-blue font-outfit hover:bg-gray-100 hover:text-kutala-blue   text-gray-100 w-40 duration-400 ease-in-out p-3 rounded-full  cursor-pointer flex items-center justify-center">Entrar <FaCircleArrowRight className="ml-2" /></button></Link>
+                        <a href="#objectivos"><button className="bg-white hover:bg-gray-300  font-outfit  w-40 duration-400 ease-in-out p-3 rounded-full cursor-pointer flex items-center justify-center">Saber Mais <HiQuestionMarkCircle className="ml-2" /></button></a>
+                        <Link to="/login"><button className="bg-white hover:bg-gray-300 font-outfit  w-40 duration-400 ease-in-out p-3 rounded-full  cursor-pointer flex items-center justify-center">Entrar <FaCircleArrowRight className="ml-2" /></button></Link>
 
                     </motion.div>
 

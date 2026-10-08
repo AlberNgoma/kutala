@@ -110,7 +110,6 @@ module.exports = {
         }
     },
 
-
     async atualizarRisco(req, res) {
         const risco_inundacaoId = req.params.id;
         const { nivel, descricao, bairro_id } = req.body;

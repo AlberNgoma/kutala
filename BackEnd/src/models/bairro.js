@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     latitude: DataTypes.STRING,
     longitude: DataTypes.STRING,
     poligono: DataTypes.JSON,
-    nivel_risco: DataTypes.ENUM('ALTO', 'BAIXO')
+    vulnerabilidade: DataTypes.ENUM('ALTA', 'BAIXA')
   }, {
     sequelize,
     modelName: 'bairro',

@@ -5,6 +5,7 @@ const route = express.Router();
 
 route.post("/cadastrar-cidadao", cidadaoController.criarCidadao);
 route.get("/listar-cidadao", cidadaoController.listarCidadao);
+route.get("/filtro", cidadaoController.filtrar);
 route.get("/listar-cidadao/:id", cidadaoController.listarCidadaoId);
 route.put("/actualizar-cidadao/:id", cidadaoController.actualizarCidadao);
 route.delete("/apagar-cidadao/:id", cidadaoController.apagarCidadao);

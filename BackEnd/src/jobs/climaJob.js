@@ -4,8 +4,8 @@ const climaService = require("../services/climaService");
 
 
 const LIMITES = {
-    ALTO: { chuva: 0, humidade: 30 },
-    MEDIO: { chuva: 0, humidade: 20 },
+    ALTO: { chuva: 3, humidade: 30 },
+    MEDIO: { chuva: 2, humidade: 20 },
     BAIXO: { chuva: 0, humidade: 10 }
 }
 
@@ -33,7 +33,7 @@ cron.schedule("*/10 * * * * *", async () => {
             const dados = await climaService.obterClima(bairro.latitude, bairro.longitude);
 
             const clima = {
-                chuva: dados.rain ? dados.rain["1h"] || dados.rain["3h"] : 0,
+                chuva: dados.rain ? dados.rain["1h"] : 0,
                 temperatura: dados.main.temp,
                 humidade: dados.main.humidity,
                 descricao_clima: dados.weather[0].description

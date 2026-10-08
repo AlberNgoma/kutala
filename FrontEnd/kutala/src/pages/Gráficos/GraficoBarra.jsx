@@ -18,7 +18,7 @@ function GraficoBarras() {
         const resposta = await DadosGrafico();
         const dadosTratados = resposta.data.map(item => ({
           nome: item.municipio.nome,
-          total_de_riscos: item.total_de_riscos
+          Alertas: item.Total_de_Alertas
         }))
         setMunicipio(dadosTratados);
 
@@ -38,21 +38,24 @@ function GraficoBarras() {
   return (
     <>
 
-      {loading ? (
-        <div className="w-full h-50 flex items-center justify-center">
-          <ClipLoader size={40} color="#041736" />
-        </div>
-      ) : (
-        <ResponsiveContainer width="100%" height={193}>
-      <BarChart data={municipio}>
-        <CartesianGrid strokeDasharray="3" /> {/* as linhas de fundo */}
-        <XAxis dataKey="nome" />                 {/* eixo horizontal */}
-        <YAxis fill='#000000' />                               {/* eixo vertical */}
-        <Tooltip />                             {/* o popup ao passar o rato */}
-        <Bar dataKey="total_de_riscos" fill="#0a0364" radius={[10, 10, 0, 0]} /> {/* as barras em si */}
-      </BarChart>
-    </ResponsiveContainer>
-      )}
+      <div className='flex flex-col'>
+
+        {loading ? (
+          <div className="w-full h-50 flex items-center justify-center">
+            <ClipLoader size={40} color="#041736" />
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={193}>
+            <BarChart data={municipio}>
+              <CartesianGrid strokeDasharray="1" /> {/* as linhas de fundo */}
+              <XAxis dataKey="nome" />                 {/* eixo horizontal */}
+              <YAxis fill='blue' />                               {/* eixo vertical */}
+              <Tooltip />                             {/* o popup ao passar o rato */}
+              <Bar dataKey="Alertas" fill="blue" radius={[10, 10, 0, 0]} /> {/* as barras em si */}
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+      </div>
 
     </>
 

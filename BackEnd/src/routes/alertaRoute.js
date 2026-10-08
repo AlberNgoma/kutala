@@ -13,7 +13,10 @@ route.delete("/alerta/:id", alertaController.deletarAlerta);
 route.get("/total-alerta", alertaController.totalAlerta);
 route.get("/total-alerta/:id", alertaController.todalAlertaMunicipio);
 route.get("/alerta-bairro", alertaController.alertaPorBairro);
+route.get("/alerta-municipio", alertaController.alertaPorMunicipio);
 route.get("/alerta-data", alertaController.alertaPorData);
+route.get("/nivel-alerta", alertaController.nivelAlerta);
+route.get("/filtro-alerta", alertaController.filtro)
 route.get("/alerta-nivel", alertaController.alertaPorNivel);
 route.get("/alerta-pendente", alertaController.alertasPendentes);
 route.post("/alerta/risco-inundacao/:id", verificarToken, alertaController.emitirRisco);

@@ -1,9 +1,9 @@
 import SideBarAdmin from "../../../components/SideBarAdmin";
-import TotalGovernador from "../../../services/Governador/TotalGovService"
 import TotalCidadao from "../../../services/Cidadao/TotalCidService";
 import TotalAlerta from "../../../services/Alerta/TotalAlertService";
-import TotalRisc from "../../../services/Risco/TotalRiscService";
+import TotalRisc from "../../../services/Alerta/TotalRiscoAlto"
 import buscarBairros from "../../../services/Bairro/Total";
+import filtro from "../../../services/Cidadao/Filtrar";
 import { ClipLoader } from "react-spinners";
 import { motion } from "framer-motion"
 
@@ -16,6 +16,8 @@ import { FaUsers } from "react-icons/fa6";
 import { RiAlertLine } from "react-icons/ri";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { LuMapPinHouse } from "react-icons/lu";
+import { IoMdDownload } from "react-icons/io";
+import { FaFilter } from "react-icons/fa";
 
 import GraficoBarras from "../../Gráficos/GraficoBarra";
 import GraficoLinhas from "../../Gráficos/GraficoLine";
@@ -24,31 +26,21 @@ import GraficoPizza from "../../Gráficos/GraficoPizza";
 
 
 function Dashboard() {
-    const [totalGov, setTotalGov] = useState([]);
     const [totalCid, setTotalCid] = useState([]);
     const [totalAlert, setTotalAlert] = useState([]);
     const [totalRisc, setTotalRisc] = useState([]);
     const [totalBairro, setTotalBairro] = useState([]);
     const [loader, setLoader] = useState(false)
+    const [filter, setFilter] = useState(false)
+    const [day, setDay] = useState(0);
+    const [quantidadeCid, setQuantidadeCid] = useState(0)
+
 
 
 
 
 
     useEffect(() => {
-        async function todosGov() {
-            try {
-                setLoader(true)
-                const resposta = await TotalGovernador();
-                setTotalGov(resposta.data);
-
-
-            } catch (error) {
-                console.log("Erro ao buscar o total de governadores")
-            }
-            setLoader(false)
-
-        }
 
         async function todosCid() {
             try {
@@ -84,6 +76,7 @@ function Dashboard() {
                 setTotalRisc(resposta.data)
 
 
+
             } catch (error) {
                 console.log("Erro ao calcular total de riscos ", error)
             }
@@ -100,12 +93,23 @@ function Dashboard() {
                 console.log("Erro ao ir buscar os bairros")
             }
         }
+
+        async function filtrarUser(dia) {
+
+            try {
+                const resposta = await filtro(dia);
+                setQuantidadeCid(resposta.data)
+
+            } catch {
+                console.log("Erro ao flitrar cidadao")
+            }
+        }
         todosBairros()
         todosAlert()
         todosRisc()
         todosCid()
-        todosGov()
-    }, [])
+        filtrarUser(day)
+    }, [day])
 
 
     const container = {
@@ -142,10 +146,27 @@ function Dashboard() {
                     className="flex-1 w-full min-h-screen bg-gray-100 flex flex-col p-5 bg- gap-3">
 
                     <motion.div variants={item}
-                        className="md:mt-0 mt-10 py-2 md:p-0 font-outfit">
+                        className="md:mt-0 mt-10 py-1 md:p-0 font-outfit">
                         <p className="font-medium tracking-wide">Painel de controle</p>
                         <p className="text-gray-600 tracking-wide">Bem vindo de volta admin!</p>
                     </motion.div>
+
+                    <motion.div variants={item}
+                        className="flex items-center justify-between font-outfit">
+                        <button onClick={() => setFilter(prev => !prev)}
+                            className={`${filter ? "rounded-t-md" : "rounded-md"} p-2 bg-kutala-blue w-30 flex items-center justify-center text-white gap-2 cursor-pointer text-sm `} >
+                            Filtrar
+                            <FaFilter />
+                        </button>
+
+
+                        <button className="p-2 w-40 cursor-pointer text-sm rounded-md flex items-center justify-center gap-2 bg-kutala-blue text-white">
+                            Gerar Relatório
+                            <IoMdDownload />
+                        </button>
+                    </motion.div>
+
+
 
 
                     <motion.div variants={item}
@@ -159,7 +180,7 @@ function Dashboard() {
                             {loader ? (
                                 <ClipLoader size={25} />
                             ) : (
-                                <h3 className="text-3xl font-bold font-google text-kutala-blue">{totalCid}</h3>
+                                <h3 className="text-3xl font-bold font-google text-kutala-blue">{quantidadeCid}</h3>
                             )}
                         </div>
 
@@ -192,7 +213,7 @@ function Dashboard() {
 
                         <div className="bg-white rounded-xl p-6  cursor-pointer  shadow-md transition-all">
                             <div className="flex justify-between items-center mb-4">
-                                <p className="font-outfit text-xl  text-kutala-blue font-medium">Riscos</p>
+                                <p className="font-outfit text-xl  text-kutala-blue font-medium">Riscos Alto</p>
                                 <IoAlertCircleOutline className="text-4xl text-red-500 bg-red-50 p-2 rounded" />
                             </div>
                             {loader ? (
@@ -209,7 +230,7 @@ function Dashboard() {
 
                         <div className="flex flex-col gap-4 w-full md:w-2/3">
                             <div className="bg-white p-5 shadow-xl rounded-md flex-1 fl6x flex-col justify-center items-center cursor-pointer">
-                                <h2 className="font-google text-lg text-center mb-2">Municípios Afetados</h2>
+                                <h2 className="font-google text-lg text-center mb-2">Alertas por Município</h2>
                                 <div className="w-full h-full min-h-50">
                                     <GraficoBarras />
                                 </div>
@@ -217,7 +238,7 @@ function Dashboard() {
 
                             <div className="bg-white p-5 shadow-xl rounded-lg flex-1 flex items-center justify-center">
                                 <div className="w-full h-full min-h-50">
-                                    <h2 className="font-google text-lg text-center mb-2">Últimos Alertas</h2>
+                                    <h2 className="font-google text-lg text-center mb-2"> Evolução dos Alertas</h2>
                                     <GraficoLinhas />
                                 </div>
                             </div>
@@ -225,14 +246,38 @@ function Dashboard() {
 
 
                         <div className="bg-white shadow-xl rounded-lg w-full md:w-1/3 p-5 flex flex-col justify-center items-center">
-                            <h2 className="font-google text-xl mb-4">Níveis de alerta</h2>
+                            <h2 className="font-google text-xl mb-4">Quantidade de alertas</h2>
                             <div className="w-full h-full flex items-center justify-center">
                                 <GraficoPizza />
                             </div>
                         </div>
 
                     </motion.div>
+
+                    {filter && (
+                        <div className="absolute  bg-white border w-30 h-40 md:top-29 top-40 rounded-b-md font-outfit flex flex-col gap-2">
+                            <p onClick={() => { setDay(0); setFilter(false) }}
+                                className="w-full px-2 hover:bg-kutala-blue hover:text-white cursor-pointer mt-1">Hoje</p>
+
+
+                             <p onClick={() => { setDay(1); setFilter(false) }}
+                                className="w-full px-2 hover:bg-kutala-blue hover:text-white cursor-pointer">1 Dia</p>
+
+                             <p onClick={() => { setDay(3); setFilter(false) }}
+                                className="w-full px-2 hover:bg-kutala-blue hover:text-white cursor-pointer">3 Dias</p>
+
+
+                            <p onClick={() => { setDay(7); setFilter(false) }}
+                                className="w-full px-2 hover:bg-kutala-blue hover:text-white cursor-pointer">Uma Semana</p>
+
+
+                            <p onClick={() => { setDay(30); setFilter(false) }}
+                                className="w-full px-2 hover:bg-kutala-blue hover:text-white cursor-pointer">Um Mês</p>
+                        </div>
+                    )}
                 </motion.div>
+
+
 
             </div>
 
